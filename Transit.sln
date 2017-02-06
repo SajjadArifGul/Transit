@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Entities", "Transit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Services", "Transit.Services\Transit.Services.csproj", "{3B229570-E188-4F95-94DB-F67C0D129C05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transit.Data", "Transit.Data\Transit.Data.csproj", "{E15B7067-21EC-4683-9CEA-7A4572344A65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3B229570-E188-4F95-94DB-F67C0D129C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B229570-E188-4F95-94DB-F67C0D129C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B229570-E188-4F95-94DB-F67C0D129C05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E15B7067-21EC-4683-9CEA-7A4572344A65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E15B7067-21EC-4683-9CEA-7A4572344A65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E15B7067-21EC-4683-9CEA-7A4572344A65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E15B7067-21EC-4683-9CEA-7A4572344A65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
