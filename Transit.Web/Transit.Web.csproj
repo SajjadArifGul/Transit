@@ -265,6 +265,12 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_MetaSection.cshtml" />
+    <Content Include="Views\Shared\_StylesSection.cshtml" />
+    <Content Include="Views\Shared\_ScriptsSection.cshtml" />
+    <Content Include="Views\Shared\_Menus.cshtml" />
+    <Content Include="Views\Shared\_BreadCrumbs.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

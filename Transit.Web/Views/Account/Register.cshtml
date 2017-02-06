@@ -1,41 +1,77 @@
 ﻿@model Transit.Web.Models.RegisterViewModel
-@{
+@*@{
     ViewBag.Title = "Register";
-}
+}*@
 
-<h2>@ViewBag.Title.</h2>
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>
-}
+<!-- Main Content -->
+<div class="page-wrapper pa-0 ma-0">
+    <div class="container-fluid">
+        <!-- Row -->
+        <div class="table-struct full-width full-height">
+            <div class="table-cell vertical-align-middle">
+                <div class="auth-form  ml-auto mr-auto no-float">
+                    <div class="panel panel-default card-view mb-0">
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <h6 class="panel-title txt-dark">Sign Upper</h6>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-wrapper collapse in">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div class="form-wrap">
+                                            <form action="#">
+                                                @*@Html.AntiForgeryToken()*@
+                                                <div class="form-group">
+                                                    <label class="control-label mb-10" for="@Model.Email">Email address</label>
+                                                    <div class="input-group">
+                                                        <input type="email" class="form-control" required="" id="@Model.Email" placeholder="Enter email">
+                                                        <div class="input-group-addon"><i class="icon-envelope-open"></i></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label mb-10" for="@Model.Password">Password</label>
+                                                    <div class="input-group">
+                                                        <input type="password" class="form-control" required="" id="@Model.Password" placeholder="Enter pwd">
+                                                        <div class="input-group-addon"><i class="icon-lock"></i></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label mb-10" for="@Model.ConfirmPassword">Confirm Password</label>
+                                                    <div class="input-group">
+                                                        <input type="password" class="form-control" required="" id="@Model.ConfirmPassword" placeholder="Enter pwd">
+                                                        <div class="input-group-addon"><i class="icon-lock"></i></div>
+                                                    </div>
+                                                </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+                                                <div class="form-group">
+                                                    <div class="checkbox checkbox-success">
+                                                        <input id="checkbox_2" required="" type="checkbox">
+                                                        <label for="checkbox_2"> I agree to all <a class="txt-danger capitalize-font" href="#">terms</a></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-success btn-block">sign up</button>
+                                                </div>
+                                                <div class="form-group mb-0">
+                                                    <span class="inline-block pr-5">Already have an account?</span>
+                                                    <a class="inline-block txt-danger" href="login-page.html">Sign In</a>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Row -->
+    </div>
+
+</div>
+<!-- /Main Content -->
