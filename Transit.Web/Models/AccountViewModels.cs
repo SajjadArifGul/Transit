@@ -65,6 +65,10 @@ namespace Transit.Web.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

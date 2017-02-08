@@ -139,7 +139,7 @@ namespace Transit.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            return View("Register", "_StandaloneLayout", new RegisterViewModel());
         }
 
         //
@@ -151,7 +151,7 @@ namespace Transit.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { Name=model.Name, UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -169,7 +169,7 @@ namespace Transit.Web.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View("Register", "_StandaloneLayout", model);
         }
 
         //

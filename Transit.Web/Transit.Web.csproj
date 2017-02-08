@@ -271,6 +271,7 @@
     <Content Include="Views\Shared\_Menus.cshtml" />
     <Content Include="Views\Shared\_BreadCrumbs.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_StandaloneLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

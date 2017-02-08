@@ -16,6 +16,8 @@ namespace Transit.Web.Models
             // Add custom user claims here
             return userIdentity;
         }
+        
+        public string Name { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -23,6 +25,17 @@ namespace Transit.Web.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder); // This needs to go before the other rules!
+
+            modelBuilder.Entity<ApplicationUser>().ToTable("Users");
+            modelBuilder.Entity<IdentityRole>().ToTable("Roles");
+            modelBuilder.Entity<IdentityUserRole>().ToTable("UserRoles");
+            modelBuilder.Entity<IdentityUserClaim>().ToTable("UserClaims");
+            modelBuilder.Entity<IdentityUserLogin>().ToTable("UserLogins");
         }
 
         public static ApplicationDbContext Create()

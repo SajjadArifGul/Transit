@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    @Html.Partial("_MetaSection")
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    @Html.Partial("_StylesSection")
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Preloader -->
+        <div class="preloader-it">
+            <div class="la-anim-1"></div>
+        </div>
+        <!-- /Preloader -->
+        <!-- Main Content -->
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+        <!-- /Main Content -->
+    </div>
+    @Html.Partial("_ScriptsSection")
+</body>
+</html>
