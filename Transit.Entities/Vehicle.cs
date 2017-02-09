@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Transit.Entities
+{
+    public class Vehicle
+    {
+        [Key]
+        public int ID { get; set; }
+        public string Name { get; set; }
+
+        public VehicleType VehicleType { get; set; }
+        public int VehicleTypeID { get; set; }
+
+        public Route Route { get; set; }
+
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime ModifiedOn { get; set; }
+    }
+}
