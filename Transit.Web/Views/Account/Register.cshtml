@@ -1,6 +1,6 @@
 ﻿@model Transit.Web.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Register Account";
+    ViewBag.Title = "Register New Account";
 }
 
 <!-- Row -->
@@ -19,7 +19,7 @@
                         <div class="row">
                             <div class="col-sm-12 col-xs-12">
                                 <div class="form-wrap">
-                                    <form action="~/Account/Register" method="post">
+                                    <form action="register" method="post">
                                         @Html.AntiForgeryToken()
                                         <div class="form-group">
                                             <label class="control-label mb-10">Name</label>
@@ -55,7 +55,7 @@
                                         </div>
                                         <div class="form-group mb-0">
                                             <span class="inline-block pr-5">Already have an account?</span>
-                                            <a class="inline-block txt-danger" href="login-page.html">Login</a>
+                                            <a class="inline-block txt-danger" href="login">Login</a>
                                         </div>
 
                                         <div class="form-group mb-0">

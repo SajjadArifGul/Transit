@@ -58,7 +58,7 @@ namespace Transit.Web.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View("Login", "_StandaloneLayout", new LoginViewModel());
         }
 
         //
@@ -70,7 +70,7 @@ namespace Transit.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View("Login", "_StandaloneLayout", model);
             }
 
             // This doesn't count login failures towards account lockout
@@ -87,7 +87,7 @@ namespace Transit.Web.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                    return View("Login", "_StandaloneLayout", model);
             }
         }
 
