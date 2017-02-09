@@ -1,6 +1,9 @@
-﻿@{
+﻿@model Transit.Web.Models.HomeViewModel
+@{
     ViewBag.Title = "Home Page";
 }
+
+@Html.Partial("_BreadCrumbs", Model.BreadCrumbs.ToList())
 
 <div class="jumbotron">
     <h1>ASP.NET</h1>

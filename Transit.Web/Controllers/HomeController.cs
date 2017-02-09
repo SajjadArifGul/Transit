@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Transit.Commons;
 using Transit.Web.Models;
 
 namespace Transit.Web.Controllers
@@ -11,7 +12,7 @@ namespace Transit.Web.Controllers
     {
         public ActionResult Index()
         {
-            //HomeViewModel model = new HomeViewModel();
+            HomeViewModel model = new HomeViewModel();
 
             //{
             //    model.Title = "Home";
@@ -19,12 +20,12 @@ namespace Transit.Web.Controllers
             //    model.BreadCrumbs.Add("Dashboard");
             //}
 
-            ViewBag.King = "Home";
-            ViewBag.BreadCrumbs = new List<string>{
-                "Home",
-                "Dashboard"
+            ViewBag.Title = "Home";
+            model.BreadCrumbs = new List<Link>{
+                new Link() { Text="Home", URL="home" },
+                new Link() { Text="Dashboard", URL="home" },
             };
-            return View(new HomeViewModel());
+            return View(model);
         }
 
         public ActionResult About()

@@ -1,19 +1,31 @@
-﻿<!-- Title -->
+﻿@model List<Transit.Commons.Link>
+
+<!-- Title -->
 <div class="row heading-bg  bg-red">
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-        <h5 class="txt-light">@ViewBag.King</h5>
+        <h5 class="txt-light">Lalal</h5>
     </div>
     <!-- Breadcrumb -->
     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-        <ol class="breadcrumb">
-            @foreach (var BreadCrumb in ViewBag.BreadCrumbs)
+        @if (Model != null)
+        {
+            if (Model.Count > 0)
             {
-                <li><a href="#">@BreadCrumb</a></li>
+                <ol class="breadcrumb">
+                    @foreach (var BreadCrumb in Model)
+                    {
+                        if (BreadCrumb == Model.Last())
+                        {
+                            <li><a title="@BreadCrumb.Title" href="#" rel="@BreadCrumb.Rel" target="@BreadCrumb.Target">@BreadCrumb.Text</a></li>
+                        }
+                        else
+                        {
+                            <li><a title="@BreadCrumb.Title" href="@BreadCrumb.URL" rel="@BreadCrumb.Rel" target="@BreadCrumb.Target">@BreadCrumb.Text</a></li>
+                        }
+                    }
+                </ol>
             }
-            @*<li><a href="index.html">Dashboard</a></li>
-            <li><a href="#"><span>dashboard</span></a></li>
-            <li class="active"><span>analytical</span></li>*@
-        </ol>
+        }
     </div>
     <!-- /Breadcrumb -->
 </div>
