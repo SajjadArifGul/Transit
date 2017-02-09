@@ -38,8 +38,9 @@
 
                                         <div class="form-group">
                                             <div class="checkbox checkbox-success pr-10 pull-left">
-                                                <input name="RememberMe" id="RememberMe" value="@Model.RememberMe" type="checkbox">
+                                                <input data-val="true" name="RememberMe" id="RememberMe" value="true" type="checkbox">
                                                 <label for="RememberMe"> Keep me logged in.</label>
+                                                <input name="RememberMe" type="hidden" value="false">
                                             </div>
                                             <a class="capitalize-font txt-danger block pt-5 pull-right" href="#">forgot password</a>
                                             <div class="clearfix"></div>
