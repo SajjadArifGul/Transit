@@ -50,6 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataContext.cs" />
+    <Compile Include="Migrations\201702090857422_Initilized.cs" />
+    <Compile Include="Migrations\201702090857422_Initilized.Designer.cs">
+      <DependentUpon>201702090857422_Initilized.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +66,11 @@
       <Project>{CB2A7042-C496-47BF-83D4-E8339383784F}</Project>
       <Name>Transit.Entities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201702090857422_Initilized.resx">
+      <DependentUpon>201702090857422_Initilized.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
