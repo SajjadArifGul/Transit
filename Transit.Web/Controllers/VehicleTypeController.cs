@@ -41,5 +41,15 @@ namespace Transit.Web.Controllers
 
             return View(model);
         }
+
+        public ActionResult AddNewPartial()
+        {
+            return View("_AddNewPartial", "_NoLayout", new VehicleTypeViewModel());
+        }
+
+        public ActionResult AddNewVehicleType(VehicleTypeViewModel model)
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,48 @@
+                 $("#addEditForm").slideDown(400, function () {
+                     //console.log("slided down from AddEdit");
+                 });
+                 $("#btnNew").slideUp(400);
+                 if (id === 0) {
+                     $("#IsNew").val("true");
+                     $("#btnAction").val("Save");
+                 }
+                 else {
+                     $("#IsNew").val("false");
+                     $("#btnAction").val("Update");
+                 }
+                 $("[relf-button='remove_preivew']").click(function () {
+                     var optId = $(this).attr("optid");
+                     $("#FilePreview_" + optId).hide();
+                     $("#FileUpload_" + optId).show();
+                     $("#fileID_" + optId).html("");
+                     $("#fileID_" + optId).attr("href", "");
+                     $("#" + ($("#uploading_" + optId).attr("relf-creative-id-field"))).val("");
+                     $("#" + ($("#uploading_" + optId).attr("relf-creative-url-field"))).val("");
+                 });
+                 $("#btnCancel").click(function () {
+                     if (typeof beforeFormClose !== 'undefined' && $.isFunction(beforeFormClose)) {
+                         beforeFormClose();
+                     }
+
+                     $("#addEditForm").slideUp(400);
+                     $("#btnNew").slideDown(500);
+
+                 });
+                 $("#btnAction").click(function () {
+                     saveUpdateTableRecord();
+                     if (id === 0) {
+                         $("#IsNew").val("true");
+                         $("#btnAction").val("Save");
+                     }
+                     else {
+                         $("#IsNew").val("false");
+                         $("#btnAction").val("Update");
+                     }
+                     validatDetailFormForm();
+                     return false;
+                 });
+                 applyNumeric();
+
+                 $('[name$="Ar"]').css("direction", "rtl");
+                 formLoaded();
+                 $("html, body").animate({ scrollTop: 0 }, "slow");

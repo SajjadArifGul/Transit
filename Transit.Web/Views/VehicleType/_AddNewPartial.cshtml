@@ -1,0 +1,72 @@
+﻿@model Transit.Web.Models.VehicleTypeViewModel
+
+<!-- Row -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default card-view">
+            <div class="panel-wrapper collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-wrap">
+                                <form action="AddNewVehicleType" method="post" class="form-horizontal">
+                                    <div class="form-body">
+                                        <h6 class="txt-dark capitalize-font"><i class="fa fa-truck mr-10"></i>Add New Vehicle Type</h6>
+                                        <hr>
+                                        <!-- /Row -->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Vehile Type Name</label>
+                                                    <div class="input-group col-md-9">
+                                                        <input type="text" class="form-control" required="" name="Name" placeholder="Name" value="@Model.Name">
+                                                        <div class="input-group-addon"><i class="ti-truck"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Status</label>
+                                                    <div class="checkbox checkbox-success col-md-9">
+                                                        <input data-val="true" name="IsActive" id="IsActive" value="true" type="checkbox">
+                                                        <label for="IsActive"> IsActive</label>
+                                                        <input name="IsActive" type="hidden" value="false">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions mt-10">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-offset-2 col-md-9">
+                                                        <button type="submit" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-check"></i> </span><span class="btn-text">Save</span></button>
+                                                        <button type="button" id="AddNewVehicleTypeCancelButton" class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-times"></i> </span><span class="btn-text">Cancel</span></button>
+
+                                                        <button data-toggle="modal" data-target="#responsive-modal" class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-times"></i> </span><span class="btn-text">Open Model</span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6"> </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Row -->
+
+<script>
+       $("#AddNewVehicleTypeCancelButton").click(function () {
+            debugger;
+            $("#VehicleTypeForm").slideUp(function () {
+                $("#AddVehicleTypeRow").slideDown();
+            });
+        });
+</script>
