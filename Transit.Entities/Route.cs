@@ -15,13 +15,9 @@ namespace Transit.Entities
         public Vehicle Vehicle { get; set; }
         public int VehicleID { get; set; }
 
-        //public BusStop StartBusStop { get; set; }
-        //public int StartBusStopID { get; set; }
-
-        //public BusStop EndBusStop { get; set; }
-        //public int EndBusStopID { get; set; }
-
         public IEnumerable<BusStop> BusStops { get; set; }
+
+        public bool IsVerified { get; set; }
 
         public bool IsActive { get; set; }
         public string CreatedBy { get; set; }

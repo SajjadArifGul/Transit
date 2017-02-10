@@ -16,6 +16,8 @@ namespace Transit.Entities
         public VehicleType VehicleType { get; set; }
         public int VehicleTypeID { get; set; }
         
+        public bool IsVerified { get; set; }
+        
         public bool IsActive { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }

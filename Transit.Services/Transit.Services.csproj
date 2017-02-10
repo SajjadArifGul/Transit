@@ -41,6 +41,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VehicleTypesService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Transit.Data\Transit.Data.csproj">
+      <Project>{E15B7067-21EC-4683-9CEA-7A4572344A65}</Project>
+      <Name>Transit.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Entities\Transit.Entities.csproj">
+      <Project>{CB2A7042-C496-47BF-83D4-E8339383784F}</Project>
+      <Name>Transit.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
