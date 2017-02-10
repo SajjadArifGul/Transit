@@ -207,6 +207,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PageViewModel.cs" />
+    <Compile Include="Models\VehicleTypeViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -275,10 +276,10 @@
     <Content Include="Views\Shared\_BreadCrumbs.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_StandaloneLayout.cshtml" />
+    <Content Include="Views\VehicleType\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\VehicleType\" />
     <Folder Include="Views\Vehicle\" />
   </ItemGroup>
   <ItemGroup>
@@ -293,6 +294,14 @@
     <ProjectReference Include="..\Transit.Commons\Transit.Commons.csproj">
       <Project>{44CCAF36-2F99-4E44-8DDF-9EBBBF8FEC40}</Project>
       <Name>Transit.Commons</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Entities\Transit.Entities.csproj">
+      <Project>{cb2a7042-c496-47bf-83d4-e8339383784f}</Project>
+      <Name>Transit.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transit.Services\Transit.Services.csproj">
+      <Project>{3B229570-E188-4F95-94DB-F67C0D129C05}</Project>
+      <Name>Transit.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

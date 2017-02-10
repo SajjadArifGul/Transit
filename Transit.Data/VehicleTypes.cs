@@ -13,11 +13,6 @@ namespace Transit.Data
 
         public List<VehicleType> GetAll()
         {
-            return db.VehicleTypes.Where(t=>t.IsActive == true).ToList();
-        }
-
-        public List<VehicleType> GetAllForAdmin()
-        {
             return db.VehicleTypes.ToList();
         }
 

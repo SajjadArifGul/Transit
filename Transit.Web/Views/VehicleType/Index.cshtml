@@ -1,0 +1,89 @@
+﻿@model Transit.Web.Models.VehicleTypeViewModels
+
+@{
+    ViewBag.Title = "Vehicle Types";
+}
+
+@Html.Partial("_BreadCrumbs", Model.BreadCrumbs.ToList())
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default card-view">
+            <div class="panel-wrapper collapse in">
+                <div class="panel-body">
+                    <button class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Add New Vehicle Type</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Row -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default card-view">
+            <div class="panel-wrapper collapse in">
+                <div class="panel-body">
+                    @if (Model.VehicleTypes != null)
+                    {
+                        <div class="table-wrap">
+                        <div class="table-responsive">
+                            <table class="table display product-overview mb-30">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>Created By</th>
+                                        <th>Created On</th>
+                                        <th>Modified By</th>
+                                        <th>Modified On</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var VehicleType in Model.VehicleTypes)
+                                    {
+                                        <tr>
+                                            <td>@VehicleType.ID</td>
+                                            <td>@VehicleType.Name</td>
+                                            <td>
+                                                @if (VehicleType.IsActive)
+                                                {
+                                                    <span class="label label-success">Yes</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-danger">No</span>
+                                                }
+                                            </td>
+                                            <td>@VehicleType.CreatedBy</td>
+                                            <td>@VehicleType.CreatedOn</td>
+                                            <td>@VehicleType.ModifiedBy</td>
+                                            <td>@VehicleType.ModifiedOn</td>
+                                            <td>
+                                                <button class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Edit</span></button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-trash"></i> </span><span class="btn-text">Delete</span></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No Vehicle Types Found.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Row -->
