@@ -6,10 +6,7 @@ using Transit.Commons;
 
 namespace Transit.Web.Models
 {
-    public class HomeViewModel
+    public class HomeViewModel : PageViewModel
     {
-        public string Title { get; set; }
-
-        public List<Link> BreadCrumbs { get; set; }
     }
 }

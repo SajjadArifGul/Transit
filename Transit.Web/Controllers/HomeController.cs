@@ -14,17 +14,13 @@ namespace Transit.Web.Controllers
         {
             HomeViewModel model = new HomeViewModel();
 
-            //{
-            //    model.Title = "Home";
-            //    model.BreadCrumbs.Add("Home");
-            //    model.BreadCrumbs.Add("Dashboard");
-            //}
-
-            ViewBag.Title = "Home";
+            model.Title = "Home";
             model.BreadCrumbs = new List<Link>{
+                new Link() { Text="Dashboard" },
                 new Link() { Text="Home", URL="home" },
                 new Link() { Text="Dashboard", URL="home" },
             };
+
             return View(model);
         }
 

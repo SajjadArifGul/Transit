@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /*------------------------------------------------------------------
 [Master Stylesheet]
 Project:	KENNY
@@ -2202,6 +2202,7 @@ a.toggle-left-nav-btn i {
 /* Top Navigation */
 .navbar .brand-img {
   margin: 15px 0 0 0;
+  height: 30px;
 }
 .navbar.navbar-inverse {
   background: #fff;
@@ -2444,6 +2445,9 @@ footer .brand {
   display: block;
   float: left;
   padding-top: 4px;
+}
+footer .brand-img {
+  height:17px;
 }
 footer .navbar-nav > li > a {
   padding-bottom: 0;
