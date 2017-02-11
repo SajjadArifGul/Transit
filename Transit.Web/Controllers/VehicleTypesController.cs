@@ -71,6 +71,7 @@ namespace Transit.Web.Controllers
                 VehicleType vehicleType = new VehicleType()
                 {
                     Name = model.Name,
+                    IsActive = model.IsActive,
                     CreatedBy = User.Identity.GetUserName(),
                     CreatedOn = DateTime.Now,
                     ModifiedBy = User.Identity.GetUserName(),
@@ -81,6 +82,15 @@ namespace Transit.Web.Controllers
             }
 
             return View("Index", GetVehicleTypesModel());
+        }
+
+        [HttpPost]
+        public JsonResult AddNewVehicleTypeAJAX()
+        {
+            JsonResult result = new JsonResult();
+
+            result.Data = "done done doe";
+            return result;
         }
 
         [HttpGet]
@@ -98,11 +108,7 @@ namespace Transit.Web.Controllers
 
                         ID = vehicleType.ID,
                         Name = vehicleType.Name,
-                        IsActive = vehicleType.IsActive,
-                        CreatedBy = vehicleType.CreatedBy,
-                        CreatedOn = vehicleType.CreatedOn,
-                        ModifiedBy = vehicleType.ModifiedBy,
-                        ModifiedOn = vehicleType.ModifiedOn
+                        IsActive = vehicleType.IsActive
                     };
 
                     return View("_EditVehicleType", "_NoLayout", model);
@@ -113,11 +119,22 @@ namespace Transit.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult EditVehicleType(VehicleTypeViewModel model)
+        public ActionResult EditVehicleType(VehicleTypeViewModel model)
         {
-            JsonResult result = new JsonResult();
-            
-            return result;
+            if (VerifyModel(model))
+            {
+                VehicleType vehicleType = new VehicleType()
+                {
+                    Name = model.Name,
+                    IsActive = model.IsActive,
+                    ModifiedBy = User.Identity.GetUserName(),
+                    ModifiedOn = DateTime.Now
+                };
+
+                VehicleTypesService.Instance.UpdateVehicleType(vehicleType);
+            }
+
+            return View("Index", GetVehicleTypesModel());
         }
     }
 }
