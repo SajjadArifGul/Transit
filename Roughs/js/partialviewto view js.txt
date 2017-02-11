@@ -1,3 +1,22 @@
+$("#AddNewVehicleType").click(function () {
+ +            var jqxhr = $.ajax({
+ +                type: "get",
+ +                url: "AddNewPartial"
+ +            })
+ +             .done(function (data) {
+ +                 $("#AddVehicleTypeRow").slideUp(function () {
+ +                     $("#VehicleTypeForm").slideUp();
+ +                     $("#VehicleTypeForm").html(data);
+ +                     $("#VehicleTypeForm").slideDown();
+ +                 });
+ +             })
+ +             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+ +                 showMessage(errorThrown, true);
+ +             })
+ +             .always(function () {
+ +             });
+ +        });
+
                  $("#addEditForm").slideDown(400, function () {
                      //console.log("slided down from AddEdit");
                  });

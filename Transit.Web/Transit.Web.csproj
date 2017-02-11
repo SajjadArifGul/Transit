@@ -198,7 +198,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\VehicleTypeController.cs" />
     <Compile Include="Controllers\VehicleTypesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -277,11 +276,10 @@
     <Content Include="Views\Shared\_BreadCrumbs.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_StandaloneLayout.cshtml" />
-    <Content Include="Views\VehicleType\Index.cshtml" />
-    <Content Include="Views\VehicleType\_AddNewPartial.cshtml" />
     <Content Include="Views\Shared\_NoLayout.cshtml" />
     <Content Include="Views\VehicleTypes\Index.cshtml" />
     <Content Include="Views\VehicleTypes\_AddNewVehicleType.cshtml" />
+    <Content Include="Views\VehicleTypes\_EditVehicleType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

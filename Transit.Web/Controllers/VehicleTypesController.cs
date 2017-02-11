@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,8 +13,16 @@ namespace Transit.Web.Controllers
 {
     public class VehicleTypesController : Controller
     {
-        // GET: VehicleTypes
-        public ActionResult Index()
+        public bool VerifyModel(VehicleTypeViewModel model)
+        {
+            if (!string.IsNullOrEmpty(model.Name) && !string.IsNullOrWhiteSpace(model.Name))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public VehicleTypeViewModels GetVehicleTypesModel()
         {
             VehicleTypeViewModels model = new VehicleTypeViewModels();
 
@@ -39,7 +48,13 @@ namespace Transit.Web.Controllers
                 });
             }
 
-            return View(model);
+            return model;
+        }
+
+        // GET: VehicleTypes
+        public ActionResult Index()
+        {
+            return View(GetVehicleTypesModel());
         }
 
         [HttpGet]
@@ -51,7 +66,58 @@ namespace Transit.Web.Controllers
         [HttpPost]
         public ActionResult AddNewVehicleType(VehicleTypeViewModel model)
         {
-            return View();
+            if (VerifyModel(model))
+            {
+                VehicleType vehicleType = new VehicleType()
+                {
+                    Name = model.Name,
+                    CreatedBy = User.Identity.GetUserName(),
+                    CreatedOn = DateTime.Now,
+                    ModifiedBy = User.Identity.GetUserName(),
+                    ModifiedOn = DateTime.Now
+                };
+
+                VehicleTypesService.Instance.AddNewVehicleType(vehicleType);
+            }
+
+            return View("Index", GetVehicleTypesModel());
+        }
+
+        [HttpGet]
+        public ActionResult EditVehicleType(int VehicleTypeID)
+        {
+            if (VehicleTypeID>0)
+            {
+                VehicleType vehicleType = VehicleTypesService.Instance.GetVehicleTypeByID(VehicleTypeID);
+
+                if (vehicleType != null)
+                {
+                    VehicleTypeViewModel model = new VehicleTypeViewModel()
+                    {
+                        Title = "Update Vehicle Type",
+
+                        ID = vehicleType.ID,
+                        Name = vehicleType.Name,
+                        IsActive = vehicleType.IsActive,
+                        CreatedBy = vehicleType.CreatedBy,
+                        CreatedOn = vehicleType.CreatedOn,
+                        ModifiedBy = vehicleType.ModifiedBy,
+                        ModifiedOn = vehicleType.ModifiedOn
+                    };
+
+                    return View("_EditVehicleType", "_NoLayout", model);
+                }
+                else return null;
+            }
+            else return null;
+        }
+
+        [HttpPost]
+        public JsonResult EditVehicleType(VehicleTypeViewModel model)
+        {
+            JsonResult result = new JsonResult();
+            
+            return result;
         }
     }
 }
