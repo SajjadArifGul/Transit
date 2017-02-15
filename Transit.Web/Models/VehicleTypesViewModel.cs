@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Transit.Web.Models
 {
-    public class VehicleTypeViewModels : PageViewModel
+    public class VehicleTypesViewModel : PageViewModel
     {
         public List<VehicleTypeViewModel> VehicleTypes { get; set; }
     }

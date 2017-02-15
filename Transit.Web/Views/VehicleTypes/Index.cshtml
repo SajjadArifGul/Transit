@@ -1,4 +1,4 @@
-﻿@model Transit.Web.Models.VehicleTypeViewModels
+﻿@model Transit.Web.Models.VehicleTypesViewModel
 
 @{
     ViewBag.Title = "Vehicle Types";
@@ -29,12 +29,6 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="panel panel-default card-view">
-            <div class="panel-heading">
-                <div class="pull-left">
-                    <h6 class="panel-title txt-dark">Vehicle Types</h6>
-                </div>
-                <div class="clearfix"></div>
-            </div>
             <div class="panel-wrapper collapse in">
                 <div class="panel-body">
                     @if (Model.VehicleTypes != null)
@@ -49,11 +43,10 @@
                                             <th>IsActive</th>
                                             <th>Created</th>
                                             <th>Modified</th>
-                                            <th>Operations</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         @foreach (var VehicleType in Model.VehicleTypes)
                                         {
                                             <tr>
@@ -80,10 +73,8 @@
                                                     @VehicleType.ModifiedOn
                                                 </td>
                                                 <td>
-                                                    <div class="button-list mt-25">
-                                                        <button editId="@VehicleType.ID" class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Edit</span></button>
-                                                        <button deleteId="@VehicleType.ID" class="btn btn-danger btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-trash"></i> </span><span class="btn-text">Delete</span></button>
-                                                    </div>
+                                                    <button editId="@VehicleType.ID" class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Edit</span></button>
+                                                    <button deleteId="@VehicleType.ID" class="btn btn-danger btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-trash"></i> </span><span class="btn-text">Delete</span></button>
                                                 </td>
                                             </tr>
                                         }
@@ -96,6 +87,9 @@
                     {
                         <p class="text-muted">No Vehicle Types Found.</p>
                     }
+                    <hr />
+                    <button data-toggle="modal" data-target="#addNewVehicleType-modal" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Add New Vehicle Type</span></button>
+                    <button data-toggle="modal" data-target="#myeditor-modal" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Add New Vehicle Type 2</span></button>
                 </div>
             </div>
         </div>
@@ -104,7 +98,7 @@
 <!-- /Vehicle Types Row -->
 
 
-<div id="responsive-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+<div id="addNewVehicleType-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -114,20 +108,74 @@
             <div class="modal-body">
                 <form id="NewVehicleTypeModelForm">
                     <div class="form-group">
-                        <label for="recipient-name" class="control-label mb-10">Recipient:</label>
-                        <input required type="text" class="form-control" id="recipient-name">
+                        <label class="control-label col-md-3">Vehile Type Name</label>
+                        <div class="input-group col-md-9">
+                            <input id="NewVehicleTypeName" type="text" class="form-control" required="" name="Name" placeholder="Name">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="message-text" class="control-label mb-10">Message:</label>
-                        <textarea required class="form-control" id="message-text"></textarea>
+                        <label class="control-label col-md-3">Status</label>
+                        <div class="checkbox checkbox-success col-md-9">
+                            <input data-val="true" name="IsActive" id="IsActive" value="true" type="checkbox">
+                            <label for="IsActive"> IsActive</label>
+                            <input name="IsActive" type="hidden" value="false">
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" id="AddVehicleTypeModelSubmitButton" data-dismiss="modal" class="btn btn-danger">Save changes</button>
+                <button type="submit" id="AddVehicleTypeModelSubmitButton" class="btn btn-danger">Save changes</button>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="myeditor-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content form-horizontal" id="editor" method="post">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h5 class="modal-title" id="editor-title">Add a new row</h5>
+            </div>
+            <div class="modal-body">
+                <input type="number" id="id" name="id" class="hidden">
+                <div class="form-group required">
+                    <label for="firstName" class="col-sm-3 control-label">First Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" required="">
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label for="lastName" class="col-sm-3 control-label">Last Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" required="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="jobTitle" class="col-sm-3 control-label">Job Title</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="jobTitle" name="jobTitle" placeholder="Job Title">
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label for="startedOn" class="col-sm-3 control-label">Started On</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="startedOn" name="startedOn" placeholder="Started On" required="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="dob" class="col-sm-3 control-label">Date of Birth</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="dob" name="dob" placeholder="Date of Birth">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -135,27 +183,53 @@
 
     $(document).ready(function () {
 
-
+        //$('#responsive-modal').modal('toggle');//its working 
         $("#AddVehicleTypeModelSubmitButton").click(function () {
-            console.log("I am being hit");
+            debugger;
 
-            $("#responsive-modal").toggle();
+            var VehicleTypeName = $("#NewVehicleTypeName").val();
 
-            var jqxhr = $.ajax(
-                {
-                    type: "post",
-                    url: "AddNewVehicleTypeAJAX"
-                })
-                    .done(function (data) {
-                        console.log(data);
+            if (VehicleTypeName == undefined || VehicleTypeName.length <= 0)
+            {
+                AddErrors($("#NewVehicleTypeName"));
+            }
+            else {
+                console.log("I am being hit");
+                console.log(VehicleTypeName);
+
+                var jqxhr = $.ajax(
+                    {
+                        type: "post",
+                        url: "AddNewVehicleTypeAJAX",
+                        data: { Name: VehicleTypeName }
                     })
-                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                        showMessage(errorThrown, true);
-                    })
-                    .always(function () {
-                    });
-
+                        .done(function (data) {
+                            console.log(data);
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                            showMessage(errorThrown, true);
+                        })
+                        .always(function () {
+                        });
+            }
         });
+
+        function AddErrors(control)
+        {
+            var span = $("<span>");
+            span.addClass("help-block");
+            span.attr('id', 'kingpin');
+            span.html("This field is required.");            
+            control.after(span);
+            control.parent().closest('div').addClass("has-error has-danger");
+
+            RemoveErrors(control);
+        }
+
+        function RemoveErrors(control)
+        {
+            var shit = control.childs().closest();
+        }
 
         $("#AddNewVehicleType").click(function () {
             var jqxhr = $.ajax({

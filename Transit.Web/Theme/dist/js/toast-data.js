@@ -6,11 +6,11 @@ $(document).ready(function() {
 	"use strict";
 	
 	$.toast({
-		heading: 'Welcome to kenny',
-		text: 'Use the predefined ones, or specify a custom position object.',
+		heading: 'Hello King Pin',
+		text: 'I am king of north',
 		position: 'top-right',
 		loaderBg:'#3cb878',
-		icon: 'error',
+		icon: 'info',
 		hideAfter: 3000, 
 		stack: 6
 	});
@@ -19,7 +19,7 @@ $(document).ready(function() {
 	    $.toast().reset('all'); 
 		$("body").removeAttr('class');
 		$.toast({
-            heading: 'Welcome to kenny',
+            heading: 'Welcome Kingpin',
             text: 'Use the predefined ones, or specify a custom position object.',
             position: 'top-right',
             loaderBg:'#3cb878',
@@ -34,7 +34,7 @@ $(document).ready(function() {
         $.toast().reset('all');
 		$("body").removeAttr('class');
 		$.toast({
-            heading: 'Welcome to kenny',
+            heading: 'Welcome Kingpin',
             text: 'Use the predefined ones, or specify a custom position object.',
             position: 'top-right',
             loaderBg:'#3cb878',
@@ -49,7 +49,7 @@ $(document).ready(function() {
         $.toast().reset('all');
 		$("body").removeAttr('class');
 		$.toast({
-            heading: 'Welcome to kenny',
+            heading: 'Welcome Kingpin',
             text: 'Use the predefined ones, or specify a custom position object.',
             position: 'top-right',
             loaderBg:'#3cb878',
@@ -64,7 +64,7 @@ $(document).ready(function() {
 		$.toast().reset('all');
 		$("body").removeAttr('class');
 		$.toast({
-            heading: 'Welcome to kenny',
+            heading: 'Welcome Kingpin',
             text: 'Use the predefined ones, or specify a custom position object.',
             position: 'top-right',
             loaderBg:'#3cb878',

@@ -22,9 +22,9 @@ namespace Transit.Web.Controllers
             return false;
         }
 
-        public VehicleTypeViewModels GetVehicleTypesModel()
+        public VehicleTypesViewModel GetVehicleTypesModel()
         {
-            VehicleTypeViewModels model = new VehicleTypeViewModels();
+            VehicleTypesViewModel model = new VehicleTypesViewModel();
 
             model.Title = "Vehicle Types";
             model.BreadCrumbs = new List<Link>{
@@ -85,11 +85,42 @@ namespace Transit.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddNewVehicleTypeAJAX()
+        public JsonResult AddNewVehicleTypeAJAX(VehicleTypeViewModel model)
         {
             JsonResult result = new JsonResult();
 
-            result.Data = "done done doe";
+            if (VerifyModel(model))
+            {
+                List<VehicleType> VehicleTypes = VehicleTypesService.Instance.GetAllVehicleTypes();
+
+                foreach (VehicleType vehicleType in VehicleTypes)
+                {
+                    if (vehicleType.Name.ToLower() == model.Name.ToLower())
+                    {
+                        result.Data = "Vehicle Type with name " + model.Name + " already exists.";
+
+                        return result;
+                    }
+                }
+
+                VehicleType newVehicleType = new VehicleType()
+                {
+                    Name = model.Name,
+                    IsActive = model.IsActive,
+                    CreatedBy = User.Identity.GetUserName(),
+                    CreatedOn = DateTime.Now,
+                    ModifiedBy = User.Identity.GetUserName(),
+                    ModifiedOn = DateTime.Now
+                };
+
+                VehicleTypesService.Instance.AddNewVehicleType(newVehicleType);
+
+                List<VehicleType> AllVehicleTypes = VehicleTypesService.Instance.GetAllVehicleTypes();
+
+                result.Data = AllVehicleTypes;
+            }
+            else result.Data = "Vehicle Type Data is incomplete.";
+
             return result;
         }
 
