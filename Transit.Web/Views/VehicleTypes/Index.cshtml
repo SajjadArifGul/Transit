@@ -13,6 +13,7 @@
             <div class="panel-wrapper collapse in">
                 <div class="panel-body">
                     <button id="AddNewVehicleType" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Add New Vehicle Type</span></button>
+                    <button data-toggle="modal" data-target="#responsive-modal" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Open Modal</span></button>
                 </div>
             </div>
         </div>
@@ -28,13 +29,19 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="panel panel-default card-view">
+            <div class="panel-heading">
+                <div class="pull-left">
+                    <h6 class="panel-title txt-dark">Vehicle Types</h6>
+                </div>
+                <div class="clearfix"></div>
+            </div>
             <div class="panel-wrapper collapse in">
                 <div class="panel-body">
                     @if (Model.VehicleTypes != null)
                     {
                         <div class="table-wrap">
                             <div class="table-responsive">
-                                <table class="table display product-overview mb-30">
+                                <table class="table display mb-30">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -42,8 +49,7 @@
                                             <th>IsActive</th>
                                             <th>Created</th>
                                             <th>Modified</th>
-                                            <th>Edit</th>
-                                            <th>Delete</th>
+                                            <th>Operations</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -74,10 +80,10 @@
                                                     @VehicleType.ModifiedOn
                                                 </td>
                                                 <td>
-                                                    <button editId="@VehicleType.ID" class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Edit</span></button>
-                                                </td>
-                                                <td>
-                                                    <button deleteId="@VehicleType.ID" class="btn btn-danger btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-trash"></i> </span><span class="btn-text">Delete</span></button>
+                                                    <div class="button-list mt-25">
+                                                        <button editId="@VehicleType.ID" class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Edit</span></button>
+                                                        <button deleteId="@VehicleType.ID" class="btn btn-danger btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-trash"></i> </span><span class="btn-text">Delete</span></button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         }
@@ -97,9 +103,59 @@
 </div>
 <!-- /Vehicle Types Row -->
 
+
+<div id="responsive-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h5 class="modal-title">Add New Vehicle Type</h5>
+            </div>
+            <div class="modal-body">
+                <form id="NewVehicleTypeModelForm">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label mb-10">Recipient:</label>
+                        <input required type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="control-label mb-10">Message:</label>
+                        <textarea required class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" id="AddVehicleTypeModelSubmitButton" data-dismiss="modal" class="btn btn-danger">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
     $(document).ready(function () {
+
+
+        $("#AddVehicleTypeModelSubmitButton").click(function () {
+            console.log("I am being hit");
+
+            $("#responsive-modal").toggle();
+
+            var jqxhr = $.ajax(
+                {
+                    type: "post",
+                    url: "AddNewVehicleTypeAJAX"
+                })
+                    .done(function (data) {
+                        console.log(data);
+                    })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        showMessage(errorThrown, true);
+                    })
+                    .always(function () {
+                    });
+
+        });
 
         $("#AddNewVehicleType").click(function () {
             var jqxhr = $.ajax({
