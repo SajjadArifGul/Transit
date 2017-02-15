@@ -6,25 +6,6 @@
 
 @Html.Partial("_BreadCrumbs", Model.BreadCrumbs.ToList())
 
-<!-- Add New Vehicle Type Row -->
-<div id="AddVehicleTypeRow" class="row">
-    <div class="col-sm-12">
-        <div class="panel panel-default card-view">
-            <div class="panel-wrapper collapse in">
-                <div class="panel-body">
-                    <button id="AddNewVehicleType" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Add New Vehicle Type</span></button>
-                    <button data-toggle="modal" data-target="#responsive-modal" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Open Modal</span></button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Add New Vehicle Type Row -->
-
-<!-- Vehicle Type Form Row -->
-<div id="VehicleTypeForm" class="row"></div>
-<!-- Vehicle Type For, Row -->
-
 <!-- Vehicle Types Row -->
 <div class="row">
     <div class="col-sm-12">
@@ -88,8 +69,7 @@
                         <p class="text-muted">No Vehicle Types Found.</p>
                     }
                     <hr />
-                    <button data-toggle="modal" data-target="#addNewVehicleType-modal" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Add New Vehicle Type</span></button>
-                    <button data-toggle="modal" data-target="#myeditor-modal" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Add New Vehicle Type 2</span></button>
+                    <button data-toggle="modal" data-target="#newVehicleTypeModal" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-plus"></i> </span><span class="btn-text">Add New Vehicle Type</span></button>
                 </div>
             </div>
         </div>
@@ -97,77 +77,25 @@
 </div>
 <!-- /Vehicle Types Row -->
 
-
-<div id="addNewVehicleType-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<div id="newVehicleTypeModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content form-horizontal" id="newVehicleTypeModalForm">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 <h5 class="modal-title">Add New Vehicle Type</h5>
             </div>
             <div class="modal-body">
-                <form id="NewVehicleTypeModelForm">
-                    <div class="form-group">
-                        <label class="control-label col-md-3">Vehile Type Name</label>
-                        <div class="input-group col-md-9">
-                            <input id="NewVehicleTypeName" type="text" class="form-control" required="" name="Name" placeholder="Name">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-3">Status</label>
-                        <div class="checkbox checkbox-success col-md-9">
-                            <input data-val="true" name="IsActive" id="IsActive" value="true" type="checkbox">
-                            <label for="IsActive"> IsActive</label>
-                            <input name="IsActive" type="hidden" value="false">
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" id="AddVehicleTypeModelSubmitButton" class="btn btn-danger">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="myeditor-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog" role="document">
-        <form class="modal-content form-horizontal" id="myeditorform">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h5 class="modal-title" id="editor-title">Add a new row</h5>
-            </div>
-            <div class="modal-body">
-                <input type="number" id="id" name="id" class="hidden">
                 <div class="form-group required">
-                    <label for="firstName" class="col-sm-3 control-label">First Name</label>
+                    <label for="firstName" class="col-sm-3 control-label">Name</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" required="">
-                    </div>
-                </div>
-                <div class="form-group required">
-                    <label for="lastName" class="col-sm-3 control-label">Last Name</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" required="">
+                        <input id="newVehicleTypeName" type="text" class="form-control" name="Name" placeholder="Name" required>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="jobTitle" class="col-sm-3 control-label">Job Title</label>
+                    <label for="dob" class="col-sm-3 control-label">Status</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="jobTitle" name="jobTitle" placeholder="Job Title">
-                    </div>
-                </div>
-                <div class="form-group required">
-                    <label for="startedOn" class="col-sm-3 control-label">Started On</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="startedOn" name="startedOn" placeholder="Started On" required="">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="dob" class="col-sm-3 control-label">Date of Birth</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="dob" name="dob" placeholder="Date of Birth">
+                        <input data-val="true" name="IsActive" id="newVehicleTypeIsActive" type="checkbox">
+                        <label for="newVehicleTypeIsActive"> IsActive</label>
                     </div>
                 </div>
             </div>
@@ -181,24 +109,34 @@
 
 <script>
     $(document).ready(function () {
-         $("#myeditorform").on('submit', (function (event) {
-                debugger;
+
+        $("#newVehicleTypeModalForm").on('submit', (function (event) {
+            if ($("#newVehicleTypeModalForm").valid()) {
                 event.preventDefault();
                 var jqxhr = $.ajax(
                             {
                                 type: "post",
-                                url: "AddNewVehicleTypeAJAX",
-                                data: { Name: 'KingPin' }
+                                data: {
+                                    Name: $("#newVehicleTypeName").val(),
+                                    IsActive: $("#newVehicleTypeIsActive").is(':checked')
+                                },
+                                url: "AddNewVehicleTypeAJAX"
                             })
                                 .done(function (data) {
                                     console.log(data);
+                                    $('#newVehicleTypeModal').modal('toggle');
                                 })
                                 .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                                     showMessage(errorThrown, true);
                                 })
                                 .always(function () {
                                 });
-            }));
+            }
+            else
+            {
+                console.log("There is a fukin empty field.");
+            }
+        }));
 
         $("#NewRecord2").click(function () {
             debugger;

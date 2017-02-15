@@ -54,8 +54,6 @@ namespace Transit.Web
 
 
             bundles.Add(new ScriptBundle("~/bundles/Theme").Include(
-                      "~/Theme/vendors/bower_components/jquery/dist/jquery.min.js",
-                      "~/Scripts/jquery.validate*",
                       "~/Theme/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js",
                       "~/Theme/vendors/bower_components/datatables/media/js/jquery.dataTables.min.js",
                       "~/Theme/dist/js/jquery.slimscroll.js",
