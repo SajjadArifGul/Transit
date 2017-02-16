@@ -154,41 +154,26 @@ namespace Transit.Web.Controllers
 
             VehicleTypeRecord record = new VehicleTypeRecord();
 
-            if (VerifyModel(model))
+            if (VerifyModel(model) && model.ID != 0)
             {
-                List<VehicleType> VehicleTypes = VehicleTypesService.Instance.GetAllVehicleTypes();
-
-                foreach (VehicleType vehicleType in VehicleTypes)
+                VehicleType updateVehicleType = new VehicleType()
                 {
-                    if (vehicleType.Name.ToLower() == model.Name.ToLower())
-                    {
-                        record.Successful = false;
-                        record.Exception = "Vehicle Type with name " + model.Name + " already exists.";
-
-                        result.Data = record;
-                        return result;
-                    }
-                }
-
-                VehicleType newVehicleType = new VehicleType()
-                {
+                    ID = model.ID,
                     Name = model.Name,
                     IsActive = model.IsActive,
-                    CreatedBy = User.Identity.GetUserName(),
-                    CreatedOn = DateTime.Now,
                     ModifiedBy = User.Identity.GetUserName(),
                     ModifiedOn = DateTime.Now
                 };
 
-                if (VehicleTypesService.Instance.AddNewVehicleType(newVehicleType))
+                if (VehicleTypesService.Instance.UpdateVehicleType(updateVehicleType))
                 {
                     record.Successful = true;
-                    record.VehicleType = VehicleTypesService.Instance.GetVehicleTypeByName(newVehicleType.Name);
+                    record.VehicleType = VehicleTypesService.Instance.GetVehicleTypeByID(model.ID);
                 }
                 else
                 {
                     record.Successful = false;
-                    record.Message = "An error occurred while adding new Vehicle Type record.";
+                    record.Message = "An error occurred while updating Vehicle Type record.";
                 }
             }
             else

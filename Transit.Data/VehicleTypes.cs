@@ -39,9 +39,13 @@ namespace Transit.Data
 
                 if (VehicleTypeInDB != null)
                 {
-                    VehicleTypeInDB = vehicleType;
+                    VehicleTypeInDB.Name = vehicleType.Name;
+                    VehicleTypeInDB.IsActive = vehicleType.IsActive;
+                    VehicleTypeInDB.ModifiedBy = vehicleType.ModifiedBy;
+                    VehicleTypeInDB.ModifiedOn = vehicleType.ModifiedOn;
 
                     db.Entry(VehicleTypeInDB).State = System.Data.Entity.EntityState.Modified;  //should be updated.
+                    
                     db.SaveChanges();
                     return true;
                 }

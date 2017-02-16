@@ -32,8 +32,8 @@
                                         {
                                             <tr>
                                                 <td>@VehicleType.ID</td>
-                                                <td><strong>@VehicleType.Name</strong></td>
-                                                <td>
+                                                <td class="name"><strong>@VehicleType.Name</strong></td>
+                                                <td class="isActive">
                                                     @if (VehicleType.IsActive)
                                                     {
                                                     <span class="label label-success">Yes</span>
@@ -120,7 +120,7 @@
                 <h5 class="modal-title">New Update Vehicle Type</h5>
             </div>
             <div class="modal-body">
-                <input id="updateVehicleTypeID" type="hidden" class="form-control" name="ID" required>
+                <input id="updateVehicleTypeID" type="hidden" class="form-control" name="ID">
                 <div class="form-group required">
                     <label class="col-sm-3 control-label">Name</label>
                     <div class="col-sm-9">
@@ -305,7 +305,8 @@
                                     }
                                 })
                                 .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                                    showMessage(errorThrown, true);
+                                    $("#newVehicleTypeFormErrors").show();
+                                    $("#newVehicleTypeFormErrorsMessages").html(errorThrown);
                                 })
                                 .always(function () {
                                 });
@@ -320,9 +321,22 @@
             debugger;
             var button = $(event.relatedTarget);
             var vehicleTypeId = button.data('id');
+            var vehicleTypeName = button.closest("tr").find(".name").text();
+            var vehicleTypeIsActive = button.closest("tr").find(".isActive").children().first().text();
 
             var modal = $(this);
             modal.find('#updateVehicleTypeID').val(vehicleTypeId);
+            modal.find('#updateVehicleTypeName').val(vehicleTypeName);
+
+            if(vehicleTypeIsActive == "Yes")
+            {
+                $("#updateVehicleTypeIsActive").prop('checked', true);
+            }
+            else
+            {
+                $("#updateVehicleTypeIsActive").prop('checked', false);
+            }
+
         });
 
         $("#updateVehicleTypeModalForm").on('submit', (function (event) {
@@ -366,7 +380,9 @@
                                     }
                                 })
                                 .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                                    showMessage(errorThrown, true);
+                                    debugger;
+                                    $("#updateVehicleTypeFormErrors").show();
+                                    $("#updateVehicleTypeFormErrorsMessages").html(errorThrown);
                                 })
                                 .always(function () {
                                 });
