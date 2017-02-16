@@ -30,7 +30,7 @@
                                     <tbody>
                                         @foreach (var VehicleType in Model.VehicleTypes)
                                         {
-                                            <tr>
+                                            <tr id="@VehicleType.ID">
                                                 <td>@VehicleType.ID</td>
                                                 <td class="name"><strong>@VehicleType.Name</strong></td>
                                                 <td class="isActive">
@@ -191,10 +191,10 @@
 
         var NewRow = false;
 
+        var RowID = 0;
+
         var vehicleTypesTable = $("#VehicleTypesTable").DataTable({
             "createdRow": function (row, data, index) {
-                debugger;
-
                 if (NewRow) {
                     if (data[2] == true) {
                         var span = $("<span>");
@@ -323,7 +323,7 @@
             var vehicleTypeId = button.data('id');
             var vehicleTypeName = button.closest("tr").find(".name").text();
             var vehicleTypeIsActive = button.closest("tr").find(".isActive").children().first().text();
-
+            RowID = button.closest("tr").attr("id");
             var modal = $(this);
             modal.find('#updateVehicleTypeID').val(vehicleTypeId);
             modal.find('#updateVehicleTypeName').val(vehicleTypeName);
@@ -340,13 +340,13 @@
         });
 
         $("#updateVehicleTypeModalForm").on('submit', (function (event) {
-
             if ($("#updateVehicleTypeModalForm").valid()) {
                 event.preventDefault();
                 var jqxhr = $.ajax(
                             {
                                 type: "post",
                                 data: {
+                                    ID : $("#updateVehicleTypeID").val(),
                                     Name: $("#updateVehicleTypeName").val(),
                                     IsActive: $("#updateVehicleTypeIsActive").is(':checked')
                                 },
@@ -357,8 +357,18 @@
                                     console.log(data);
 
                                     if (data.Successful) {
-                                        NewRow = true;
-                                        vehicleTypesTable.row.add([
+                                        //vehicleTypesTable.row.add([
+                                        //    data.VehicleType["ID"],
+                                        //    "<strong>" + data.VehicleType["Name"] + "</strong>",
+                                        //    data.VehicleType["IsActive"],
+                                        //    data.VehicleType["CreatedBy"] + "<br />",
+                                        //    data.VehicleType["ModifiedBy"] + "<br />",
+                                        //    "<button data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>",
+                                        //    data.VehicleType["CreatedOn"],
+                                        //    data.VehicleType["ModifiedOn"]
+                                        //]).draw(false);
+
+                                        vehicleTypesTable.row($("#updateVehicleTypeID").val()-1).data([
                                             data.VehicleType["ID"],
                                             "<strong>" + data.VehicleType["Name"] + "</strong>",
                                             data.VehicleType["IsActive"],
@@ -367,7 +377,7 @@
                                             "<button data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>",
                                             data.VehicleType["CreatedOn"],
                                             data.VehicleType["ModifiedOn"]
-                                        ]).draw(false);
+                                        ]).invalidate().draw();
 
                                         //refresh the fields in here if you like
                                         $("#updateVehicleTypeFormErrorsMessages").html("");
