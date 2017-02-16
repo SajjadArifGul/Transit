@@ -54,7 +54,7 @@
                                                     @VehicleType.ModifiedOn
                                                 </td>
                                                 <td>
-                                                    <button data-toggle="modal" data-target="#updateVehicleTypeModal" editId="@VehicleType.ID" class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Edit</span></button>
+                                                    <button data-toggle="modal" data-target="#updateVehicleTypeModal" data-id="@VehicleType.ID" class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Edit</span></button>
                                                     <button deleteId="@VehicleType.ID" class="btn btn-danger btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-trash"></i> </span><span class="btn-text">Delete</span></button>
                                                 </td>
                                             </tr>
@@ -117,20 +117,23 @@
         <form class="modal-content form-horizontal" id="updateVehicleTypeModalForm">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h5 class="modal-title">Update Vehicle Type</h5>
+                <h5 class="modal-title">New Update Vehicle Type</h5>
             </div>
             <div class="modal-body">
+                <input id="updateVehicleTypeID" type="hidden" class="form-control" name="ID" required>
                 <div class="form-group required">
-                    <label for="firstName" class="col-sm-3 control-label">Name</label>
+                    <label class="col-sm-3 control-label">Name</label>
                     <div class="col-sm-9">
                         <input id="updateVehicleTypeName" type="text" class="form-control" name="Name" placeholder="Name" required>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="dob" class="col-sm-3 control-label">Status</label>
+                    <label class="col-sm-3 control-label">Status</label>
                     <div class="col-sm-9">
-                        <input data-val="true" name="IsActive" id="updateVehicleTypeIsActive" type="checkbox">
-                        <label for="updateVehicleTypeIsActive"> IsActive</label>
+                        <div class="checkbox checkbox-success pr-10 pull-left">
+                            <input data-val="true" name="IsActive" id="updateVehicleTypeIsActive" type="checkbox">
+                            <label for="updateVehicleTypeIsActive"> IsActive</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,7 +141,37 @@
                 <button type="submit" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Update</span></button>
                 <button data-dismiss="modal" type="button" class="btn btn-default btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-times"></i> </span><span class="btn-text">Cancel</span></button>
             </div>
+            <div class="alert alert-danger" id="updateVehicleTypeFormErrors" style="display:none">
+                <p id="updateVehicleTypeFormErrorsMessages"></p>
+            </div>
         </form>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="exampleModalLabel1">New message</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label mb-10">Recipient:</label>
+                        <input type="text" class="form-control" id="recipient-name1">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="control-label mb-10">Message:</label>
+                        <textarea class="form-control" id="message-text1"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -283,7 +316,66 @@
             }
         }));
 
+        $('#updateVehicleTypeModal').on('show.bs.modal', function (event) {
+            debugger;
+            var button = $(event.relatedTarget);
+            var vehicleTypeId = button.data('id');
 
+            var modal = $(this);
+            modal.find('#updateVehicleTypeID').val(vehicleTypeId);
+        });
+
+        $("#updateVehicleTypeModalForm").on('submit', (function (event) {
+
+            if ($("#updateVehicleTypeModalForm").valid()) {
+                event.preventDefault();
+                var jqxhr = $.ajax(
+                            {
+                                type: "post",
+                                data: {
+                                    Name: $("#updateVehicleTypeName").val(),
+                                    IsActive: $("#updateVehicleTypeIsActive").is(':checked')
+                                },
+                                url: "UpdateVehicleTypeAJAX"
+                            })
+                                .done(function (data) {
+                                    debugger;
+                                    console.log(data);
+
+                                    if (data.Successful) {
+                                        NewRow = true;
+                                        vehicleTypesTable.row.add([
+                                            data.VehicleType["ID"],
+                                            "<strong>" + data.VehicleType["Name"] + "</strong>",
+                                            data.VehicleType["IsActive"],
+                                            data.VehicleType["CreatedBy"] + "<br />",
+                                            data.VehicleType["ModifiedBy"] + "<br />",
+                                            "<button data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>",
+                                            data.VehicleType["CreatedOn"],
+                                            data.VehicleType["ModifiedOn"]
+                                        ]).draw(false);
+
+                                        //refresh the fields in here if you like
+                                        $("#updateVehicleTypeFormErrorsMessages").html("");
+                                        $("#updateVehicleTypeFormErrors").hide();
+                                        $('#updateVehicleTypeModal').modal('toggle');
+                                    }
+                                    else {
+                                        $("#updateVehicleTypeFormErrors").show();
+                                        $("#updateVehicleTypeFormErrorsMessages").html(data.Exception);
+                                    }
+                                })
+                                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                                    showMessage(errorThrown, true);
+                                })
+                                .always(function () {
+                                });
+            }
+            else {
+                $("#updateVehicleTypeFormErrors").show();
+                $("#updateVehicleTypeFormErrorsMessages").html("Please fill the required form fields.");
+            }
+        }));
 
         $("#NewRecord2").click(function () {
             debugger;

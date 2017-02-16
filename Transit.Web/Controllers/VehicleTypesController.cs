@@ -146,6 +146,60 @@ namespace Transit.Web.Controllers
             result.Data = record;
             return result;
         }
+        
+        [HttpPost]
+        public JsonResult UpdateVehicleTypeAJAX(VehicleTypeViewModel model)
+        {
+            JsonResult result = new JsonResult();
+
+            VehicleTypeRecord record = new VehicleTypeRecord();
+
+            if (VerifyModel(model))
+            {
+                List<VehicleType> VehicleTypes = VehicleTypesService.Instance.GetAllVehicleTypes();
+
+                foreach (VehicleType vehicleType in VehicleTypes)
+                {
+                    if (vehicleType.Name.ToLower() == model.Name.ToLower())
+                    {
+                        record.Successful = false;
+                        record.Exception = "Vehicle Type with name " + model.Name + " already exists.";
+
+                        result.Data = record;
+                        return result;
+                    }
+                }
+
+                VehicleType newVehicleType = new VehicleType()
+                {
+                    Name = model.Name,
+                    IsActive = model.IsActive,
+                    CreatedBy = User.Identity.GetUserName(),
+                    CreatedOn = DateTime.Now,
+                    ModifiedBy = User.Identity.GetUserName(),
+                    ModifiedOn = DateTime.Now
+                };
+
+                if (VehicleTypesService.Instance.AddNewVehicleType(newVehicleType))
+                {
+                    record.Successful = true;
+                    record.VehicleType = VehicleTypesService.Instance.GetVehicleTypeByName(newVehicleType.Name);
+                }
+                else
+                {
+                    record.Successful = false;
+                    record.Message = "An error occurred while adding new Vehicle Type record.";
+                }
+            }
+            else
+            {
+                record.Successful = false;
+                record.Exception = "Vehicle Type Data is incomplete.";
+            }
+
+            result.Data = record;
+            return result;
+        }
 
         [HttpGet]
         public ActionResult EditVehicleType(int VehicleTypeID)
