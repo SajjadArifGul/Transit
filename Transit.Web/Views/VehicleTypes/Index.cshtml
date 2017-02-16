@@ -4,7 +4,7 @@
     ViewBag.Title = "Vehicle Types";
 }
 
-@Html.Partial("_BreadCrumbs", Model.BreadCrumbs.ToList())
+@Html.Partial("_BreadCrumbs", Model)
 
 <!-- Vehicle Types Row -->
 <div class="row">
@@ -16,7 +16,7 @@
                     {
                         <div class="table-wrap">
                             <div class="table-responsive">
-                                <table class="table display mb-30">
+                                <table id="VehicleTypesTable" class="table display mb-30">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -36,11 +36,11 @@
                                                 <td>
                                                     @if (VehicleType.IsActive)
                                                     {
-                                                        <span class="label label-success">Yes</span>
+                                                    <span class="label label-success">Yes</span>
                                                     }
                                                     else
                                                     {
-                                                        <span class="label label-danger">No</span>
+                                                    <span class="label label-danger">No</span>
                                                     }
                                                 </td>
                                                 <td>
@@ -54,7 +54,7 @@
                                                     @VehicleType.ModifiedOn
                                                 </td>
                                                 <td>
-                                                    <button editId="@VehicleType.ID" class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Edit</span></button>
+                                                    <button data-toggle="modal" data-target="#updateVehicleTypeModal" editId="@VehicleType.ID" class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Edit</span></button>
                                                     <button deleteId="@VehicleType.ID" class="btn btn-danger btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-trash"></i> </span><span class="btn-text">Delete</span></button>
                                                 </td>
                                             </tr>
@@ -86,22 +86,57 @@
             </div>
             <div class="modal-body">
                 <div class="form-group required">
-                    <label for="firstName" class="col-sm-3 control-label">Name</label>
+                    <label class="col-sm-3 control-label">Name</label>
                     <div class="col-sm-9">
                         <input id="newVehicleTypeName" type="text" class="form-control" name="Name" placeholder="Name" required>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="dob" class="col-sm-3 control-label">Status</label>
+                    <label class="col-sm-3 control-label">Status</label>
                     <div class="col-sm-9">
-                        <input data-val="true" name="IsActive" id="newVehicleTypeIsActive" type="checkbox">
-                        <label for="newVehicleTypeIsActive"> IsActive</label>
+                        <div class="checkbox checkbox-success pr-10 pull-left">
+                            <input data-val="true" name="IsActive" id="newVehicleTypeIsActive" type="checkbox">
+                            <label for="newVehicleTypeIsActive"> IsActive</label>
+                        </div>                        
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" id="NewRecord" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-plus"></i> </span><span class="btn-text">Save</span></button>
+                <button data-dismiss="modal" type="button" class="btn btn-default btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-times"></i> </span><span class="btn-text">Cancel</span></button>
+            </div>
+            <div class="alert alert-danger" id="newVehicleTypeFormErrors" style="display:none">
+                <p id="newVehicleTypeFormErrorsMessages"></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="updateVehicleTypeModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content form-horizontal" id="updateVehicleTypeModalForm">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h5 class="modal-title">Update Vehicle Type</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group required">
+                    <label for="firstName" class="col-sm-3 control-label">Name</label>
+                    <div class="col-sm-9">
+                        <input id="updateVehicleTypeName" type="text" class="form-control" name="Name" placeholder="Name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="dob" class="col-sm-3 control-label">Status</label>
+                    <div class="col-sm-9">
+                        <input data-val="true" name="IsActive" id="updateVehicleTypeIsActive" type="checkbox">
+                        <label for="updateVehicleTypeIsActive"> IsActive</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Update</span></button>
+                <button data-dismiss="modal" type="button" class="btn btn-default btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-times"></i> </span><span class="btn-text">Cancel</span></button>
             </div>
         </form>
     </div>
@@ -110,7 +145,92 @@
 <script>
     $(document).ready(function () {
 
+        function padding(pad, string) {
+            if (typeof string === 'undefined')
+                return pad;
+            else {
+                if ((string + "").length < pad.length) {
+                    return (pad + string).slice(-pad.length);
+                }
+                else return string;
+            }
+        }
+
+        var NewRow = false;
+
+        var vehicleTypesTable = $("#VehicleTypesTable").DataTable({
+            "createdRow": function (row, data, index) {
+                debugger;
+
+                if (NewRow) {
+                    if (data[2] == true) {
+                        var span = $("<span>");
+                        span.addClass("label label-success");
+                        span.html("Yes");
+                        $('td', row).eq(2).html(span);
+                    }
+                    else
+                    {
+                        var span = $("<span>");
+                        span.addClass("label label-danger");
+                        span.html("No");
+                        $('td', row).eq(2).html(span);
+                    }
+
+                    if (data[6] != undefined && data[6].length > 0)
+                    {
+                        var formattedDate = new Date(parseInt(data[6].substr(6)));
+                        if(formattedDate != undefined)
+                        {
+                            var fDate = formattedDate.getDate();
+                            var fMonth = formattedDate.getMonth();
+                            fMonth += 1;  // JavaScript months are 0-11
+                            var fYear = formattedDate.getFullYear();
+                            var fHour = (formattedDate.getHours());
+                            var fMinute = formattedDate.getMinutes();
+                            var fSecond = formattedDate.getSeconds();
+
+                            var ampm = "AM";
+
+                            if (fHour >= 12)
+                            {
+                                ampm = "PM";
+                                fHour = fHour % 12;
+                            }
+
+                            $('td', row).eq(3).append(fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm);
+                        }
+                    }
+
+                    if (data[7] != undefined && data[7].length > 0) {
+                        var formattedDate = new Date(parseInt(data[7].substr(6)));
+                        if (formattedDate != undefined) {
+                            var fDate = formattedDate.getDate();
+                            var fMonth = formattedDate.getMonth();
+                            fMonth += 1;  // JavaScript months are 0-11
+                            var fYear = formattedDate.getFullYear();
+                            var fHour = (formattedDate.getHours());
+                            var fMinute = formattedDate.getMinutes();
+                            var fSecond = formattedDate.getSeconds();
+
+                            var ampm = "AM";
+
+                            if (fHour >= 12) {
+                                ampm = "PM";
+                                fHour = fHour % 12;
+                            }
+
+                            $('td', row).eq(4).append(fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm);
+                        }
+                    }
+
+                    NewRow = false;
+                }
+            }
+        });
+
         $("#newVehicleTypeModalForm").on('submit', (function (event) {
+
             if ($("#newVehicleTypeModalForm").valid()) {
                 event.preventDefault();
                 var jqxhr = $.ajax(
@@ -123,8 +243,33 @@
                                 url: "AddNewVehicleTypeAJAX"
                             })
                                 .done(function (data) {
+                                    debugger;
                                     console.log(data);
-                                    $('#newVehicleTypeModal').modal('toggle');
+
+                                    if (data.Successful)
+                                    {
+                                        NewRow = true;
+                                        vehicleTypesTable.row.add([
+                                            data.VehicleType["ID"],
+                                            "<strong>" + data.VehicleType["Name"] + "</strong>",
+                                            data.VehicleType["IsActive"],
+                                            data.VehicleType["CreatedBy"] + "<br />",
+                                            data.VehicleType["ModifiedBy"] + "<br />",
+                                            "<button data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>",
+                                            data.VehicleType["CreatedOn"],
+                                            data.VehicleType["ModifiedOn"]
+                                        ]).draw(false);
+
+                                        //refresh the fields in here if you like
+                                        $("#newVehicleTypeFormErrorsMessages").html("");
+                                        $("#newVehicleTypeFormErrors").hide();
+                                        $('#newVehicleTypeModal').modal('toggle');
+                                    }
+                                    else
+                                    {
+                                        $("#newVehicleTypeFormErrors").show();
+                                        $("#newVehicleTypeFormErrorsMessages").html(data.Exception);
+                                    }
                                 })
                                 .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                                     showMessage(errorThrown, true);
@@ -132,11 +277,13 @@
                                 .always(function () {
                                 });
             }
-            else
-            {
-                console.log("There is a fukin empty field.");
+            else {
+                $("#newVehicleTypeFormErrors").show();
+                $("#newVehicleTypeFormErrorsMessages").html("Please fill the required form fields.");
             }
         }));
+
+
 
         $("#NewRecord2").click(function () {
             debugger;
@@ -145,7 +292,7 @@
             if ($("#myeditorform").valid()) {
 
                 debugger;
-                //$('#myeditor-modal').modal('toggle');//its working 
+                //$('#myeditor-modal').modal('toggle');//its working
                 var jqxhr = $.ajax(
                         {
                             type: "post",
@@ -163,14 +310,13 @@
             }
         });
 
-        //$('#responsive-modal').modal('toggle');//its working 
+        //$('#responsive-modal').modal('toggle');//its working
         $("#AddVehicleTypeModelSubmitButton").click(function () {
             debugger;
 
             var VehicleTypeName = $("#NewVehicleTypeName").val();
 
-            if (VehicleTypeName == undefined || VehicleTypeName.length <= 0)
-            {
+            if (VehicleTypeName == undefined || VehicleTypeName.length <= 0) {
                 AddErrors($("#NewVehicleTypeName"));
             }
             else {
@@ -194,20 +340,18 @@
             }
         });
 
-        function AddErrors(control)
-        {
+        function AddErrors(control) {
             var span = $("<span>");
             span.addClass("help-block");
             span.attr('id', 'kingpin');
-            span.html("This field is required.");            
+            span.html("This field is required.");
             control.after(span);
             control.parent().closest('div').addClass("has-error has-danger");
 
             RemoveErrors(control);
         }
 
-        function RemoveErrors(control)
-        {
+        function RemoveErrors(control) {
             var shit = control.childs().closest();
         }
 

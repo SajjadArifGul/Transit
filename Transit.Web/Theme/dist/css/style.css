@@ -6414,3 +6414,7 @@ ul.inbox-nav li a:hover, ul.inbox-nav li.active a, ul.inbox-nav li a:focus {
 }
 
 /*# sourceMappingURL=style.css.map */
+
+
+.alert-modal-error{color:#a94442;background-color:#f2dede;border-color:#ebccd1;padding:15px;margin-bottom:0px;border:1px solid transparent;border-radius:4px}
+.alert-modal-error hr{border-top-color:#e4b9c0}.alert-modal-error .alert-link{color:#843534}

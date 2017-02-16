@@ -28,7 +28,6 @@ namespace Transit.Web.Controllers
 
             model.Title = "Vehicle Types";
             model.BreadCrumbs = new List<Link>{
-                new Link() { Text="Vehicle Types" },
                 new Link() { Text="Home", URL="~home" },
                 new Link() { Text="Vehicle Types" },
             };
@@ -55,6 +54,16 @@ namespace Transit.Web.Controllers
         public ActionResult Index()
         {
             return View(GetVehicleTypesModel());
+        }
+
+        [HttpGet]
+        public JsonResult GetAllVehicleTypesAJAX()
+        {
+            JsonResult result = new JsonResult();
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            result.Data = VehicleTypesService.Instance.GetAllVehicleTypes();
+
+            return result;
         }
 
         [HttpGet]
@@ -89,6 +98,8 @@ namespace Transit.Web.Controllers
         {
             JsonResult result = new JsonResult();
 
+            VehicleTypeRecord record = new VehicleTypeRecord();
+
             if (VerifyModel(model))
             {
                 List<VehicleType> VehicleTypes = VehicleTypesService.Instance.GetAllVehicleTypes();
@@ -97,8 +108,10 @@ namespace Transit.Web.Controllers
                 {
                     if (vehicleType.Name.ToLower() == model.Name.ToLower())
                     {
-                        result.Data = "Vehicle Type with name " + model.Name + " already exists.";
+                        record.Successful = false;
+                        record.Exception = "Vehicle Type with name " + model.Name + " already exists.";
 
+                        result.Data = record;
                         return result;
                     }
                 }
@@ -113,14 +126,24 @@ namespace Transit.Web.Controllers
                     ModifiedOn = DateTime.Now
                 };
 
-                VehicleTypesService.Instance.AddNewVehicleType(newVehicleType);
-
-                List<VehicleType> AllVehicleTypes = VehicleTypesService.Instance.GetAllVehicleTypes();
-
-                result.Data = AllVehicleTypes;
+                if (VehicleTypesService.Instance.AddNewVehicleType(newVehicleType))
+                {
+                    record.Successful = true;
+                    record.VehicleType = VehicleTypesService.Instance.GetVehicleTypeByName(newVehicleType.Name);
+                }
+                else
+                {
+                    record.Successful = false;
+                    record.Message = "An error occurred while adding new Vehicle Type record.";
+                }
             }
-            else result.Data = "Vehicle Type Data is incomplete.";
+            else
+            {
+                record.Successful = false;
+                record.Exception = "Vehicle Type Data is incomplete.";
+            }
 
+            result.Data = record;
             return result;
         }
 

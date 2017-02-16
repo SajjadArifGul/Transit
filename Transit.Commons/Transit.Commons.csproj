@@ -42,6 +42,13 @@
   <ItemGroup>
     <Compile Include="Link.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Record.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Transit.Entities\Transit.Entities.csproj">
+      <Project>{CB2A7042-C496-47BF-83D4-E8339383784F}</Project>
+      <Name>Transit.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
