@@ -12,62 +12,27 @@
         <div class="panel panel-default card-view">
             <div class="panel-wrapper collapse in">
                 <div class="panel-body">
-                    @if (Model.VehicleTypes != null)
-                    {
-                        <div class="table-wrap">
-                            <div class="table-responsive">
-                                <table id="VehicleTypesTable" class="table display mb-30">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>IsActive</th>
-                                            <th>Created</th>
-                                            <th>Modified</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var VehicleType in Model.VehicleTypes)
-                                        {
-                                            <tr id="@VehicleType.ID">
-                                                <td>@VehicleType.ID</td>
-                                                <td class="name"><strong>@VehicleType.Name</strong></td>
-                                                <td class="isActive">
-                                                    @if (VehicleType.IsActive)
-                                                    {
-                                                    <span class="label label-success">Yes</span>
-                                                    }
-                                                    else
-                                                    {
-                                                    <span class="label label-danger">No</span>
-                                                    }
-                                                </td>
-                                                <td>
-                                                    @VehicleType.CreatedBy
-                                                    <br />
-                                                    @VehicleType.CreatedOn
-                                                </td>
-                                                <td>
-                                                    @VehicleType.ModifiedBy
-                                                    <br />
-                                                    @VehicleType.ModifiedOn
-                                                </td>
-                                                <td>
-                                                    <button data-toggle="modal" data-target="#updateVehicleTypeModal" data-id="@VehicleType.ID" class="btn btn-warning btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Edit</span></button>
-                                                    <button deleteId="@VehicleType.ID" class="btn btn-danger btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-trash"></i> </span><span class="btn-text">Delete</span></button>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="table-wrap">
+                        <div class="table-responsive">
+                            <table id="VehicleTypesTable" class="table display mb-30">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>IsActive</th>
+                                        <th>Created</th>
+                                        <th>CreatedOn</th>
+                                        <th>Modified</th>
+                                        <th>ModifiedOn</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
-                    }
-                    else
-                    {
-                        <p class="text-muted">No Vehicle Types Found.</p>
-                    }
+                    </div>
+
                     <hr />
                     <button data-toggle="modal" data-target="#newVehicleTypeModal" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-plus"></i> </span><span class="btn-text">Add New Vehicle Type</span></button>
                 </div>
@@ -178,6 +143,72 @@
 <script>
     $(document).ready(function () {
 
+        $.ajax({
+            url: 'GetAllVehicleTypesAJAX',
+            method: 'get',
+            dataType: 'json',
+            success: function (data) {
+                debugger;
+                $('#VehicleTypesTable').dataTable({
+                    paging: true,
+                    sort: true,
+                    searching: true,
+                    data: data,
+                    columns: [
+                        { 'data': 'ID' },
+                        { 'data': 'Name' },
+                        {
+                            'data': 'IsActive',
+                            'render': function (status) {
+                                if (status == true) {
+                                    var span = $("<span>");
+                                    span.addClass("label label-success");
+                                    span.html("Yes");
+                                    return "<span class=\"label label-success\">Yes</span>";
+                                }
+                                else {
+                                    var span = $("<span>");
+                                    span.addClass("label label-danger");
+                                    span.html("No");
+                                    return "<span class=\"label label-danger\">No</span>";
+                                }
+                            }
+                        },
+                        {
+                            'data': 'CreatedBy',
+                            'render': function (CreatedBy, type, row) {
+                                debugger;
+                                return CreatedBy + "<br />" + GetFormattedDate(row["CreatedOn"]);
+                            }
+                        },
+                        {
+                            'data': 'CreatedOn',
+                            "visible": false,
+                            "searchable": false
+                        },
+                        {
+                            'data': 'ModifiedBy',
+                            'render': function (ModifiedBy, type, row) {
+                                return ModifiedBy + "<br />" + GetFormattedDate(row["ModifiedOn"]);
+                            }
+                        },
+                        {
+                            'data': 'ModifiedOn',
+                            "visible": false,
+                            "searchable": false
+                        },
+                        {
+                            'data': 'ID',
+                            'render': function (ID) {
+                                return "<button data-id=\"" + ID + "\" data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
+                            }
+                        },
+                    ],
+                    
+                });
+            }
+        });
+
         function padding(pad, string) {
             if (typeof string === 'undefined')
                 return pad;
@@ -189,78 +220,118 @@
             }
         }
 
+        function GetFormattedDate(date) {
+            debugger;
+            if (date != undefined && date.length > 0) {
+                var formattedDate = new Date(parseInt(date.substr(6)));
+                if (formattedDate != undefined) {
+                    var fDate = formattedDate.getDate();
+                    var fMonth = formattedDate.getMonth();
+                    fMonth += 1;  // JavaScript months are 0-11
+                    var fYear = formattedDate.getFullYear();
+                    var fHour = (formattedDate.getHours());
+                    var fMinute = formattedDate.getMinutes();
+                    var fSecond = formattedDate.getSeconds();
+
+                    var ampm = "AM";
+
+                    if (fHour >= 12) {
+                        ampm = "PM";
+                        fHour = fHour % 12;
+                    }
+
+                    return fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm;
+                }
+            }
+        }
+
+        function GetFormattedStatus(status) {
+            if (status == true) {
+                var span = $("<span>");
+                span.addClass("label label-success");
+                span.html("Yes");
+                return "<span class=\"label label-success\">Yes</span>";
+            }
+            else {
+                var span = $("<span>");
+                span.addClass("label label-danger");
+                span.html("No");
+                return "<span class=\"label label-danger\">No</span>";
+            }
+        }
+
         var NewRow = false;
 
         var RowID = 0;
 
-        var vehicleTypesTable = $("#VehicleTypesTable").DataTable({
-            "createdRow": function (row, data, index) {
-                if (NewRow) {
-                    if (data[2] == true) {
-                        var span = $("<span>");
-                        span.addClass("label label-success");
-                        span.html("Yes");
-                        $('td', row).eq(2).html(span);
-                    }
-                    else
-                    {
-                        var span = $("<span>");
-                        span.addClass("label label-danger");
-                        span.html("No");
-                        $('td', row).eq(2).html(span);
-                    }
+        //var vehicleTypesTable = $("#VehicleTypesTable").DataTable({
+        //    "createdRow": function (row, data, index) {
+        //        if (NewRow) {
+        //            if (data[2] == true) {
+        //                var span = $("<span>");
+        //                span.addClass("label label-success");
+        //                span.html("Yes");
+        //                $('td', row).eq(2).html(span);
+        //            }
+        //            else
+        //            {
+        //                var span = $("<span>");
+        //                span.addClass("label label-danger");
+        //                span.html("No");
+        //                $('td', row).eq(2).html(span);
+        //            }
 
-                    if (data[6] != undefined && data[6].length > 0)
-                    {
-                        var formattedDate = new Date(parseInt(data[6].substr(6)));
-                        if(formattedDate != undefined)
-                        {
-                            var fDate = formattedDate.getDate();
-                            var fMonth = formattedDate.getMonth();
-                            fMonth += 1;  // JavaScript months are 0-11
-                            var fYear = formattedDate.getFullYear();
-                            var fHour = (formattedDate.getHours());
-                            var fMinute = formattedDate.getMinutes();
-                            var fSecond = formattedDate.getSeconds();
+        //            if (data[6] != undefined && data[6].length > 0)
+        //            {
+        //                var formattedDate = new Date(parseInt(data[6].substr(6)));
+        //                if(formattedDate != undefined)
+        //                {
+        //                    var fDate = formattedDate.getDate();
+        //                    var fMonth = formattedDate.getMonth();
+        //                    fMonth += 1;  // JavaScript months are 0-11
+        //                    var fYear = formattedDate.getFullYear();
+        //                    var fHour = (formattedDate.getHours());
+        //                    var fMinute = formattedDate.getMinutes();
+        //                    var fSecond = formattedDate.getSeconds();
 
-                            var ampm = "AM";
+        //                    var ampm = "AM";
 
-                            if (fHour >= 12)
-                            {
-                                ampm = "PM";
-                                fHour = fHour % 12;
-                            }
+        //                    if (fHour >= 12)
+        //                    {
+        //                        ampm = "PM";
+        //                        fHour = fHour % 12;
+        //                    }
 
-                            $('td', row).eq(3).append(fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm);
-                        }
-                    }
+        //                    $('td', row).eq(3).append(fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm);
+        //                }
+        //            }
 
-                    if (data[7] != undefined && data[7].length > 0) {
-                        var formattedDate = new Date(parseInt(data[7].substr(6)));
-                        if (formattedDate != undefined) {
-                            var fDate = formattedDate.getDate();
-                            var fMonth = formattedDate.getMonth();
-                            fMonth += 1;  // JavaScript months are 0-11
-                            var fYear = formattedDate.getFullYear();
-                            var fHour = (formattedDate.getHours());
-                            var fMinute = formattedDate.getMinutes();
-                            var fSecond = formattedDate.getSeconds();
+        //            if (data[7] != undefined && data[7].length > 0) {
+        //                var formattedDate = new Date(parseInt(data[7].substr(6)));
+        //                if (formattedDate != undefined) {
+        //                    var fDate = formattedDate.getDate();
+        //                    var fMonth = formattedDate.getMonth();
+        //                    fMonth += 1;  // JavaScript months are 0-11
+        //                    var fYear = formattedDate.getFullYear();
+        //                    var fHour = (formattedDate.getHours());
+        //                    var fMinute = formattedDate.getMinutes();
+        //                    var fSecond = formattedDate.getSeconds();
 
-                            var ampm = "AM";
+        //                    var ampm = "AM";
 
-                            if (fHour >= 12) {
-                                ampm = "PM";
-                                fHour = fHour % 12;
-                            }
+        //                    if (fHour >= 12) {
+        //                        ampm = "PM";
+        //                        fHour = fHour % 12;
+        //                    }
 
-                            $('td', row).eq(4).append(fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm);
-                        }
-                    }
+        //                    $('td', row).eq(4).append(fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm);
+        //                }
+        //            }
 
-                    NewRow = false;
-                }
-            }
-        });
+        //            NewRow = false;
+        //        }
+        //    }
+        //});
 
         $("#newVehicleTypeModalForm").on('submit', (function (event) {
 
@@ -286,11 +357,9 @@
                                             data.VehicleType["ID"],
                                             "<strong>" + data.VehicleType["Name"] + "</strong>",
                                             data.VehicleType["IsActive"],
-                                            data.VehicleType["CreatedBy"] + "<br />",
-                                            data.VehicleType["ModifiedBy"] + "<br />",
-                                            "<button data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>",
-                                            data.VehicleType["CreatedOn"],
-                                            data.VehicleType["ModifiedOn"]
+                                            data.VehicleType["CreatedBy"] + "<br />" + GetFormattedDate(data.VehicleType["CreatedOn"]),
+                                            data.VehicleType["ModifiedBy"] + "<br />" + GetFormattedDate(data.VehicleType["ModifiedOn"]),
+                                            "<button data-id=\"" + data.VehicleType["ID"] + "\" data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
                                         ]).draw(false);
 
                                         //refresh the fields in here if you like
@@ -357,26 +426,13 @@
                                     console.log(data);
 
                                     if (data.Successful) {
-                                        //vehicleTypesTable.row.add([
-                                        //    data.VehicleType["ID"],
-                                        //    "<strong>" + data.VehicleType["Name"] + "</strong>",
-                                        //    data.VehicleType["IsActive"],
-                                        //    data.VehicleType["CreatedBy"] + "<br />",
-                                        //    data.VehicleType["ModifiedBy"] + "<br />",
-                                        //    "<button data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>",
-                                        //    data.VehicleType["CreatedOn"],
-                                        //    data.VehicleType["ModifiedOn"]
-                                        //]).draw(false);
-
                                         vehicleTypesTable.row($("#updateVehicleTypeID").val()-1).data([
                                             data.VehicleType["ID"],
                                             "<strong>" + data.VehicleType["Name"] + "</strong>",
-                                            data.VehicleType["IsActive"],
-                                            data.VehicleType["CreatedBy"] + "<br />",
-                                            data.VehicleType["ModifiedBy"] + "<br />",
-                                            "<button data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>",
-                                            data.VehicleType["CreatedOn"],
-                                            data.VehicleType["ModifiedOn"]
+                                            GetFormattedStatus(data.VehicleType["IsActive"]),
+                                            data.VehicleType["CreatedBy"] + "<br />" + GetFormattedDate(data.VehicleType["CreatedOn"]),
+                                            data.VehicleType["ModifiedBy"] + "<br />" + GetFormattedDate(data.VehicleType["ModifiedOn"]),
+                                            "<button data-id=\"" + data.VehicleType["ID"] + "\" data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
                                         ]).invalidate().draw();
 
                                         //refresh the fields in here if you like
