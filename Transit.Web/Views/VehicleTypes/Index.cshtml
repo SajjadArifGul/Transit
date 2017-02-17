@@ -143,16 +143,21 @@
 <script>
     $(document).ready(function () {
 
+        var vehicleTypesTable;
+
         $.ajax({
             url: 'GetAllVehicleTypesAJAX',
             method: 'get',
             dataType: 'json',
             success: function (data) {
                 debugger;
-                $('#VehicleTypesTable').dataTable({
+                vehicleTypesTable = $('#VehicleTypesTable').on('processing.dt', function (e, settings, processing) {
+                    $('#processingIndicator').css('display', processing ? 'block' : 'none');
+                }).dataTable({
                     paging: true,
                     sort: true,
                     searching: true,
+                    "processing": true,
                     data: data,
                     columns: [
                         { 'data': 'ID' },
@@ -160,18 +165,7 @@
                         {
                             'data': 'IsActive',
                             'render': function (status) {
-                                if (status == true) {
-                                    var span = $("<span>");
-                                    span.addClass("label label-success");
-                                    span.html("Yes");
-                                    return "<span class=\"label label-success\">Yes</span>";
-                                }
-                                else {
-                                    var span = $("<span>");
-                                    span.addClass("label label-danger");
-                                    span.html("No");
-                                    return "<span class=\"label label-danger\">No</span>";
-                                }
+                                return GetFormattedStatus(status);
                             }
                         },
                         {
