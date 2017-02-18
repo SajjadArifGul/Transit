@@ -34,7 +34,7 @@
                     </div>
 
                     <hr />
-                    <button data-toggle="modal" data-target="#newVehicleTypeModal" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-plus"></i> </span><span class="btn-text">Add New Vehicle Type</span></button>
+                    <button id="newVehicleTypeButton" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-plus"></i> </span><span class="btn-text">Add New Vehicle Type</span></button>
                 </div>
             </div>
         </div>
@@ -42,101 +42,39 @@
 </div>
 <!-- /Vehicle Types Row -->
 
-<div id="newVehicleTypeModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+<div id="vehicleTypeModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog" role="document">
-        <form class="modal-content form-horizontal" id="newVehicleTypeModalForm">
+        <form class="modal-content form-horizontal" id="vehicleTypeModalForm">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h5 class="modal-title">Add New Vehicle Type</h5>
+                <h5 id ="vehicleTypeModalTitle" class="modal-title">Vehicle Type</h5>
             </div>
             <div class="modal-body">
+                <input id="vehicleTypeModalID" type="hidden" class="form-control" name="ID">
                 <div class="form-group required">
                     <label class="col-sm-3 control-label">Name</label>
                     <div class="col-sm-9">
-                        <input id="newVehicleTypeName" type="text" class="form-control" name="Name" placeholder="Name" required>
+                        <input id="vehicleTypeModalName" type="text" class="form-control" name="Name" placeholder="Name" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Status</label>
                     <div class="col-sm-9">
                         <div class="checkbox checkbox-success pr-10 pull-left">
-                            <input data-val="true" name="IsActive" id="newVehicleTypeIsActive" type="checkbox">
-                            <label for="newVehicleTypeIsActive"> IsActive</label>
-                        </div>                        
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-plus"></i> </span><span class="btn-text">Save</span></button>
-                <button data-dismiss="modal" type="button" class="btn btn-default btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-times"></i> </span><span class="btn-text">Cancel</span></button>
-            </div>
-            <div class="alert alert-danger" id="newVehicleTypeFormErrors" style="display:none">
-                <p id="newVehicleTypeFormErrorsMessages"></p>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div id="updateVehicleTypeModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog" role="document">
-        <form class="modal-content form-horizontal" id="updateVehicleTypeModalForm">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h5 class="modal-title">New Update Vehicle Type</h5>
-            </div>
-            <div class="modal-body">
-                <input id="updateVehicleTypeID" type="hidden" class="form-control" name="ID">
-                <div class="form-group required">
-                    <label class="col-sm-3 control-label">Name</label>
-                    <div class="col-sm-9">
-                        <input id="updateVehicleTypeName" type="text" class="form-control" name="Name" placeholder="Name" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Status</label>
-                    <div class="col-sm-9">
-                        <div class="checkbox checkbox-success pr-10 pull-left">
-                            <input data-val="true" name="IsActive" id="updateVehicleTypeIsActive" type="checkbox">
-                            <label for="updateVehicleTypeIsActive"> IsActive</label>
+                            <input data-val="true" name="IsActive" id="vehicleTypeModalIsActive" type="checkbox">
+                            <label for="IsActive"> IsActive</label>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-pencil"></i> </span><span class="btn-text">Update</span></button>
+                <button type="submit" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i id="vehicleTypeModalSubmitIcon" class="fa"></i> </span><span id="vehicleTypeModalSubmitText" class="btn-text">Add</span></button>
                 <button data-dismiss="modal" type="button" class="btn btn-default btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-times"></i> </span><span class="btn-text">Cancel</span></button>
             </div>
-            <div class="alert alert-danger" id="updateVehicleTypeFormErrors" style="display:none">
-                <p id="updateVehicleTypeFormErrorsMessages"></p>
+            <div class="alert alert-danger" id="vehicleTypeModalFormErrors" style="display:none">
+                <p id="vehicleTypeModalFormErrorsMessages"></p>
             </div>
         </form>
-    </div>
-</div>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h5 class="modal-title" id="exampleModalLabel1">New message</h5>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="recipient-name" class="control-label mb-10">Recipient:</label>
-                        <input type="text" class="form-control" id="recipient-name1">
-                    </div>
-                    <div class="form-group">
-                        <label for="message-text" class="control-label mb-10">Message:</label>
-                        <textarea class="form-control" id="message-text1"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send message</button>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -189,106 +127,64 @@
                 {
                     'data': 'ID',
                     'render': function (ID) {
-                        return "<button data-id=\"" + ID + "\" data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
+                        return "<button class=\"updateVehicleTypeButton btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
                     }
                 },
             ],
 
         });
 
-        function padding(pad, string) {
-            if (typeof string === 'undefined')
-                return pad;
-            else {
-                if ((string + "").length < pad.length) {
-                    return (pad + string).slice(-pad.length);
+        var newRecord;
+        $("#newVehicleTypeButton").click(function () {
+            ShowVehicleTypeModal();
+        });
+
+        //displaying Vehicle Type Data in Modal
+        function ShowVehicleTypeModal(ID, Name, Status) {
+            var vehicleTypeModal = $('#vehicleTypeModal');
+
+            if (ID) {
+
+                newRecord = false; //this means it is not a new record
+
+                $('#vehicleTypeModalID').val(ID);
+
+                if (Name != undefined && Name.length > 0) {
+                    $('#vehicleTypeModalName').val(Name);
                 }
-                else return string;
-            }
-        }
 
-        function GetFormattedDate(date) {
-            debugger;
-            if (date != undefined && date.length > 0) {
-                var formattedDate = new Date(parseInt(date.substr(6)));
-                if (formattedDate != undefined) {
-                    var fDate = formattedDate.getDate();
-                    var fMonth = formattedDate.getMonth();
-                    fMonth += 1;  // JavaScript months are 0-11
-                    var fYear = formattedDate.getFullYear();
-                    var fHour = (formattedDate.getHours());
-                    var fMinute = formattedDate.getMinutes();
-                    var fSecond = formattedDate.getSeconds();
-
-                    var ampm = "AM";
-
-                    if (fHour >= 12) {
-                        ampm = "PM";
-                        fHour = fHour % 12;
-                    }
-
-                    return fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm;
+                if (Status == true) {
+                    $("#vehicleTypeModalIsActive").prop('checked', true);
                 }
-            }
-        }
+                else {
+                    $("#vehicleTypeModalIsActive").prop('checked', false);
+                }
 
-        function GetFormattedStatus(status) {
-            if (status == true) {
-                var span = $("<span>");
-                span.addClass("label label-success");
-                span.html("Yes");
-                return "<span class=\"label label-success\">Yes</span>";
+                $('#vehicleTypeModal').find('.modal-title').text('Update Vehicle Type');
+                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitIcon').addClass('fa-pencil');
+                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitText').text('Update');
             }
             else {
-                var span = $("<span>");
-                span.addClass("label label-danger");
-                span.html("No");
-                return "<span class=\"label label-danger\">No</span>";
+                newRecord = true; //this means it is a new record
+
+                $('#vehicleTypeModal').find('.modal-title').text('Add New Vehicle Type');
+                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitIcon').addClass('fa-plus');
+                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitText').text('Save');
             }
+
+            $('#vehicleTypeModal').modal('toggle');
         }
 
-        var NewRow = false;
+        $("#vehicleTypeModalForm").on('submit', (function (event) {
 
-        var RowID = 0;
+            if ($("#vehicleTypeModalForm").valid()) {
 
-        $("#newVehicleTypeModalForm").on('submit', (function (event) {
-
-            if ($("#newVehicleTypeModalForm").valid()) {
-                event.preventDefault();
-                var jqxhr = $.ajax(
-                            {
-                                type: "post",
-                                data: {
-                                    Name: $("#newVehicleTypeName").val(),
-                                    IsActive: $("#newVehicleTypeIsActive").is(':checked')
-                                },
-                                url: "AddNewVehicleTypeAJAX"
-                            })
-                                .done(function (data) {
-                                    console.log(data);
-
-                                    if (data.Successful)
-                                    {
-                                        NewRow = true;
-                                        vehicleTypesTable.row.add(data.VehicleType).invalidate().draw(false);
-
-                                        //refresh the fields in here if you like
-                                        $("#newVehicleTypeFormErrorsMessages").html("");
-                                        $("#newVehicleTypeFormErrors").hide();
-                                        $('#newVehicleTypeModal').modal('toggle');
-                                    }
-                                    else
-                                    {
-                                        $("#newVehicleTypeFormErrors").show();
-                                        $("#newVehicleTypeFormErrorsMessages").html(data.Exception);
-                                    }
-                                })
-                                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                                    $("#newVehicleTypeFormErrors").show();
-                                    $("#newVehicleTypeFormErrorsMessages").html(errorThrown);
-                                })
-                                .always(function () {
-                                });
+                if (newRecord) {
+                    SaveNewRecord(event);
+                }
+                else{
+                    UpdateRecord(event);
+                }
             }
             else {
                 $("#newVehicleTypeFormErrors").show();
@@ -296,6 +192,7 @@
             }
         }));
 
+        var SelectedRow;
         //getting Row data on Row Click in Table
         vehicleTypesTable.on('click', 'tr', function () {
 
@@ -310,193 +207,81 @@
             ShowVehicleTypeModal(vehicleTypeId, vehicleTypeName, vehicleTypeIsActive);
         });
 
-        var SelectedRow;
-
-        //displaying Vehicle Type Data in Modal
-        function ShowVehicleTypeModal(ID, Name, Status)
+        function SaveNewRecord(event)
         {
-            if (ID) {
-                $('#updateVehicleTypeID').val(ID);
-            }
-
-            $('#updateVehicleTypeName').val(Name);
-
-            if(Status == true)
-            {
-                $("#updateVehicleTypeIsActive").prop('checked', true);
-            }
-            else
-            {
-                $("#updateVehicleTypeIsActive").prop('checked', false);
-            }
-
-            $('#updateVehicleTypeModal').modal('toggle');
-        }
-
-        function SaveNewRecord()
-        {
-
-        }
-
-        function UpdateRecord() {
-
-        }
-
-        $("#updateVehicleTypeModalForm").on('submit', (function (event) {
-            if ($("#updateVehicleTypeModalForm").valid()) {
-                event.preventDefault();
-                var jqxhr = $.ajax(
-                            {
-                                type: "post",
-                                data: {
-                                    ID : $("#updateVehicleTypeID").val(),
-                                    Name: $("#updateVehicleTypeName").val(),
-                                    IsActive: $("#updateVehicleTypeIsActive").is(':checked')
-                                },
-                                url: "UpdateVehicleTypeAJAX"
-                            })
-                                .done(function (data) {
-                                    debugger;
-                                    console.log(data);
-
-                                    if (data.Successful) {
-                                        vehicleTypesTable.row(SelectedRow).data(data.VehicleType).invalidate().draw();
-
-                                        //refresh the fields in here if you like
-                                        $("#updateVehicleTypeFormErrorsMessages").html("");
-                                        $("#updateVehicleTypeFormErrors").hide();
-                                        $('#updateVehicleTypeModal').modal('toggle');
-                                    }
-                                    else {
-                                        $("#updateVehicleTypeFormErrors").show();
-                                        $("#updateVehicleTypeFormErrorsMessages").html(data.Exception);
-                                    }
-                                })
-                                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                                    debugger;
-                                    $("#updateVehicleTypeFormErrors").show();
-                                    $("#updateVehicleTypeFormErrorsMessages").html(errorThrown);
-                                })
-                                .always(function () {
-                                });
-            }
-            else {
-                $("#updateVehicleTypeFormErrors").show();
-                $("#updateVehicleTypeFormErrorsMessages").html("Please fill the required form fields.");
-            }
-        }));
-
-        $("#NewRecord2").click(function () {
             debugger;
-            //donothing just test
-            //dont post now
-            if ($("#myeditorform").valid()) {
-
-                debugger;
-                //$('#myeditor-modal').modal('toggle');//its working
-                var jqxhr = $.ajax(
+            event.preventDefault();
+            var jqxhr = $.ajax(
                         {
                             type: "post",
-                            url: "AddNewVehicleTypeAJAX",
-                            data: { Name: 'KingPin' }
+                            data: {
+                                Name: $("#vehicleTypeModalName").val(),
+                                IsActive: $("#vehicleTypeModalIsActive").is(':checked')
+                            },
+                            url: "AddNewVehicleTypeAJAX"
                         })
                             .done(function (data) {
+                                debugger;
                                 console.log(data);
+
+                                if (data.Successful) {
+                                    vehicleTypesTable.row.add(data.VehicleType).draw(false);
+
+                                    //refresh the fields in here if you like
+                                    $("#vehicleTypeFormErrorsMessages").html("");
+                                    $("#vehicleTypeFormErrors").hide();
+                                    $('#vehicleTypeModal').modal('toggle');
+                                }
+                                else {
+                                    $("#vehicleTypeFormErrors").show();
+                                    $("#vehicleTypeFormErrorsMessages").html(data.Exception);
+                                }
                             })
                             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                                showMessage(errorThrown, true);
+                                $("#vehicleTypeFormErrors").show();
+                                $("#vehicleTypeFormErrorsMessages").html(errorThrown);
                             })
                             .always(function () {
                             });
-            }
-        });
+        }
 
-        $("#AddVehicleTypeModelSubmitButton").click(function () {
+        function UpdateRecord(event) {
             debugger;
-
-            var VehicleTypeName = $("#NewVehicleTypeName").val();
-
-            if (VehicleTypeName == undefined || VehicleTypeName.length <= 0) {
-                AddErrors($("#NewVehicleTypeName"));
-            }
-            else {
-                console.log("I am being hit");
-                console.log(VehicleTypeName);
-
-                var jqxhr = $.ajax(
-                    {
-                        type: "post",
-                        url: "AddNewVehicleTypeAJAX",
-                        data: { Name: VehicleTypeName }
-                    })
-                        .done(function (data) {
-                            console.log(data);
+            event.preventDefault();
+            var jqxhr = $.ajax(
+                        {
+                            type: "post",
+                            data: {
+                                ID: $("#vehicleTypeModalID").val(),
+                                Name: $("#vehicleTypeModalName").val(),
+                                IsActive: $("#vehicleTypeModalIsActive").is(':checked')
+                            },
+                            url: "UpdateVehicleTypeAJAX"
                         })
-                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                            showMessage(errorThrown, true);
-                        })
-                        .always(function () {
-                        });
-            }
-        });
+                            .done(function (data) {
+                                debugger;
+                                console.log(data);
 
-        function AddErrors(control) {
-            var span = $("<span>");
-            span.addClass("help-block");
-            span.attr('id', 'kingpin');
-            span.html("This field is required.");
-            control.after(span);
-            control.parent().closest('div').addClass("has-error has-danger");
+                                if (data.Successful) {
+                                    vehicleTypesTable.row(SelectedRow).data(data.VehicleType).invalidate().draw();
 
-            RemoveErrors(control);
+                                    //refresh the fields in here if you like
+                                    $("#vehicleTypeModalFormErrorsMessages").html("");
+                                    $("#vehicleTypeModalFormErrors").hide();
+                                    $('#vehicleTypeModal').modal('toggle');
+                                }
+                                else {
+                                    $("#vehicleTypeModalFormErrors").show();
+                                    $("#vehicleTypeModalFormErrorsMessages").html(data.Exception);
+                                }
+                            })
+                            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                                debugger;
+                                $("#vehicleTypeModalFormErrors").show();
+                                $("#vehicleTypeModalFormErrorsMessages").html(errorThrown);
+                            })
+                            .always(function () {
+                            });
         }
-
-        function RemoveErrors(control) {
-            var shit = control.childs().closest();
-        }
-
-        $("#AddNewVehicleType").click(function () {
-            var jqxhr = $.ajax({
-                type: "get",
-                url: "AddNewVehicleType"
-            })
-                .done(function (data) {
-                    $("#AddVehicleTypeRow").slideUp(function () {
-                        $("#VehicleTypeForm").html(data);
-                        $("#VehicleTypeForm").slideDown();
-                    });
-                })
-                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                    showMessage(errorThrown, true);
-                })
-                .always(function () {
-                });
-        });
-
-        $("[editId]").each(function () {
-            $(this).click(function () {
-
-                var editId = $(this).attr("editId");
-                console.log(editId);
-
-                var jqxhr = $.ajax({
-                    type: "get",
-                    url: "EditVehicleType?VehicleTypeID=" + editId
-                })
-                .done(function (data) {
-                    $("#AddVehicleTypeRow").slideUp(function () {
-                        $("#VehicleTypeForm").slideUp().slideDown(function () {
-                            $("#VehicleTypeForm").html(data);
-                        });
-                    });
-                })
-                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                    showMessage(errorThrown, true);
-                })
-                .always(function () {
-                });
-
-            });
-        });
     });
 </script>
