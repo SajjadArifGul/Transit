@@ -143,64 +143,56 @@
 <script>
     $(document).ready(function () {
 
-        var vehicleTypesTable;
+        var vehicleTypesTable = $("#VehicleTypesTable").DataTable({
+            paging: true,
+            sort: true,
+            searching: true,
+            ajax :{
+                url: 'GetAllVehicleTypesAJAX',
+                method: 'get',
+                dataType: 'json',
+                dataSrc: "" //everything we received back in ajax call is source for our data
+            },
+            columns: [
+                { 'data': 'ID' },
+                { 'data': 'Name' },
+                {
+                    'data': 'IsActive',
+                    'render': function (status) {
+                        return GetFormattedStatus(status);
+                    }
+                },
+                {
+                    'data': 'CreatedBy',
+                    'render': function (CreatedBy, type, row) {
+                        debugger;
+                        return CreatedBy + "<br />" + GetFormattedDate(row["CreatedOn"]);
+                    }
+                },
+                {
+                    'data': 'CreatedOn',
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    'data': 'ModifiedBy',
+                    'render': function (ModifiedBy, type, row) {
+                        return ModifiedBy + "<br />" + GetFormattedDate(row["ModifiedOn"]);
+                    }
+                },
+                {
+                    'data': 'ModifiedOn',
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    'data': 'ID',
+                    'render': function (ID) {
+                        return "<button data-id=\"" + ID + "\" data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
+                    }
+                },
+            ],
 
-        $.ajax({
-            url: 'GetAllVehicleTypesAJAX',
-            method: 'get',
-            dataType: 'json',
-            success: function (data) {
-                debugger;
-                vehicleTypesTable = $('#VehicleTypesTable').on('processing.dt', function (e, settings, processing) {
-                    $('#processingIndicator').css('display', processing ? 'block' : 'none');
-                }).dataTable({
-                    paging: true,
-                    sort: true,
-                    searching: true,
-                    "processing": true,
-                    data: data,
-                    columns: [
-                        { 'data': 'ID' },
-                        { 'data': 'Name' },
-                        {
-                            'data': 'IsActive',
-                            'render': function (status) {
-                                return GetFormattedStatus(status);
-                            }
-                        },
-                        {
-                            'data': 'CreatedBy',
-                            'render': function (CreatedBy, type, row) {
-                                debugger;
-                                return CreatedBy + "<br />" + GetFormattedDate(row["CreatedOn"]);
-                            }
-                        },
-                        {
-                            'data': 'CreatedOn',
-                            "visible": false,
-                            "searchable": false
-                        },
-                        {
-                            'data': 'ModifiedBy',
-                            'render': function (ModifiedBy, type, row) {
-                                return ModifiedBy + "<br />" + GetFormattedDate(row["ModifiedOn"]);
-                            }
-                        },
-                        {
-                            'data': 'ModifiedOn',
-                            "visible": false,
-                            "searchable": false
-                        },
-                        {
-                            'data': 'ID',
-                            'render': function (ID) {
-                                return "<button data-id=\"" + ID + "\" data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
-                            }
-                        },
-                    ],
-                    
-                });
-            }
         });
 
         function padding(pad, string) {
@@ -258,75 +250,6 @@
 
         var RowID = 0;
 
-        //var vehicleTypesTable = $("#VehicleTypesTable").DataTable({
-        //    "createdRow": function (row, data, index) {
-        //        if (NewRow) {
-        //            if (data[2] == true) {
-        //                var span = $("<span>");
-        //                span.addClass("label label-success");
-        //                span.html("Yes");
-        //                $('td', row).eq(2).html(span);
-        //            }
-        //            else
-        //            {
-        //                var span = $("<span>");
-        //                span.addClass("label label-danger");
-        //                span.html("No");
-        //                $('td', row).eq(2).html(span);
-        //            }
-
-        //            if (data[6] != undefined && data[6].length > 0)
-        //            {
-        //                var formattedDate = new Date(parseInt(data[6].substr(6)));
-        //                if(formattedDate != undefined)
-        //                {
-        //                    var fDate = formattedDate.getDate();
-        //                    var fMonth = formattedDate.getMonth();
-        //                    fMonth += 1;  // JavaScript months are 0-11
-        //                    var fYear = formattedDate.getFullYear();
-        //                    var fHour = (formattedDate.getHours());
-        //                    var fMinute = formattedDate.getMinutes();
-        //                    var fSecond = formattedDate.getSeconds();
-
-        //                    var ampm = "AM";
-
-        //                    if (fHour >= 12)
-        //                    {
-        //                        ampm = "PM";
-        //                        fHour = fHour % 12;
-        //                    }
-
-        //                    $('td', row).eq(3).append(fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm);
-        //                }
-        //            }
-
-        //            if (data[7] != undefined && data[7].length > 0) {
-        //                var formattedDate = new Date(parseInt(data[7].substr(6)));
-        //                if (formattedDate != undefined) {
-        //                    var fDate = formattedDate.getDate();
-        //                    var fMonth = formattedDate.getMonth();
-        //                    fMonth += 1;  // JavaScript months are 0-11
-        //                    var fYear = formattedDate.getFullYear();
-        //                    var fHour = (formattedDate.getHours());
-        //                    var fMinute = formattedDate.getMinutes();
-        //                    var fSecond = formattedDate.getSeconds();
-
-        //                    var ampm = "AM";
-
-        //                    if (fHour >= 12) {
-        //                        ampm = "PM";
-        //                        fHour = fHour % 12;
-        //                    }
-
-        //                    $('td', row).eq(4).append(fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm);
-        //                }
-        //            }
-
-        //            NewRow = false;
-        //        }
-        //    }
-        //});
-
         $("#newVehicleTypeModalForm").on('submit', (function (event) {
 
             if ($("#newVehicleTypeModalForm").valid()) {
@@ -341,20 +264,12 @@
                                 url: "AddNewVehicleTypeAJAX"
                             })
                                 .done(function (data) {
-                                    debugger;
                                     console.log(data);
 
                                     if (data.Successful)
                                     {
                                         NewRow = true;
-                                        vehicleTypesTable.row.add([
-                                            data.VehicleType["ID"],
-                                            "<strong>" + data.VehicleType["Name"] + "</strong>",
-                                            data.VehicleType["IsActive"],
-                                            data.VehicleType["CreatedBy"] + "<br />" + GetFormattedDate(data.VehicleType["CreatedOn"]),
-                                            data.VehicleType["ModifiedBy"] + "<br />" + GetFormattedDate(data.VehicleType["ModifiedOn"]),
-                                            "<button data-id=\"" + data.VehicleType["ID"] + "\" data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
-                                        ]).draw(false);
+                                        vehicleTypesTable.row.add(data.VehicleType).invalidate().draw(false);
 
                                         //refresh the fields in here if you like
                                         $("#newVehicleTypeFormErrorsMessages").html("");
@@ -380,18 +295,26 @@
             }
         }));
 
-        $('#updateVehicleTypeModal').on('show.bs.modal', function (event) {
-            debugger;
-            var button = $(event.relatedTarget);
-            var vehicleTypeId = button.data('id');
-            var vehicleTypeName = button.closest("tr").find(".name").text();
-            var vehicleTypeIsActive = button.closest("tr").find(".isActive").children().first().text();
-            RowID = button.closest("tr").attr("id");
-            var modal = $(this);
-            modal.find('#updateVehicleTypeID').val(vehicleTypeId);
-            modal.find('#updateVehicleTypeName').val(vehicleTypeName);
+        vehicleTypesTable.on('click', 'tr', function () {
 
-            if(vehicleTypeIsActive == "Yes")
+            var selectedVehicleType = vehicleTypesTable.row(this).data();
+
+            var vehicleTypeId = selectedVehicleType["ID"];
+            var vehicleTypeName = selectedVehicleType["Name"];
+            var vehicleTypeIsActive = selectedVehicleType["IsActive"];
+
+            ShowVehicleTypeModal(vehicleTypeId, vehicleTypeName, vehicleTypeIsActive);
+        });
+
+        function ShowVehicleTypeModal(ID, Name, Status)
+        {
+            if (ID) {
+                $('#updateVehicleTypeID').val(ID);
+            }
+
+            $('#updateVehicleTypeName').val(Name);
+
+            if(Status == true)
             {
                 $("#updateVehicleTypeIsActive").prop('checked', true);
             }
@@ -399,6 +322,32 @@
             {
                 $("#updateVehicleTypeIsActive").prop('checked', false);
             }
+
+            $('#updateVehicleTypeModal').modal('toggle');
+        }
+
+        $('#updateVehicleTypeModal').on('show.bs.modal', function (event) {
+            debugger;
+
+            
+
+            //var button = $(event.relatedTarget);
+            //var vehicleTypeId = button.data('id');
+            //var vehicleTypeName = button.closest("tr").find(".name").text();
+            //var vehicleTypeIsActive = button.closest("tr").find(".isActive").children().first().text();
+            //RowID = button.closest("tr").attr("id");
+            //var modal = $(this);
+            //modal.find('#updateVehicleTypeID').val(vehicleTypeId);
+            //modal.find('#updateVehicleTypeName').val(vehicleTypeName);
+
+            //if(vehicleTypeIsActive == "Yes")
+            //{
+            //    $("#updateVehicleTypeIsActive").prop('checked', true);
+            //}
+            //else
+            //{
+            //    $("#updateVehicleTypeIsActive").prop('checked', false);
+            //}
 
         });
 
