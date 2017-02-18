@@ -10,7 +10,6 @@
 }
 
 function GetFormattedDate(date) {
-    debugger;
     if (date != undefined && date.length > 0) {
         var formattedDate = new Date(parseInt(date.substr(6)));
         if (formattedDate != undefined) {

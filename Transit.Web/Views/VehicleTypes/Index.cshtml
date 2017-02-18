@@ -81,6 +81,20 @@
 <script>
     $(document).ready(function () {
 
+        var newRecord;
+        var SelectedRow;
+
+        function RefreshFields() {
+            $("#vehicleTypeModalID").val("");
+            $("#vehicleTypeModalName").val("");
+            $("#vehicleTypeModalIsActive").prop('checked', false);
+
+            newRecord = false;
+            SelectedRow = null;
+
+            $("#vehicleTypeModalFormErrorsMessages").html("");
+        }
+
         //setting up DataTable and Column Rendering and Getting All the required Data 
         var vehicleTypesTable = $("#VehicleTypesTable").DataTable({
             paging: true,
@@ -104,7 +118,6 @@
                 {
                     'data': 'CreatedBy',
                     'render': function (CreatedBy, type, row) {
-                        debugger;
                         return CreatedBy + "<br />" + GetFormattedDate(row["CreatedOn"]);
                     }
                 },
@@ -128,13 +141,14 @@
                     'data': 'ID',
                     'render': function (ID) {
                         return "<button class=\"updateVehicleTypeButton btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
-                    }
+                    },
+                    "searchable": false,
+                    "sortable": false                    
                 },
             ],
 
         });
 
-        var newRecord;
         $("#newVehicleTypeButton").click(function () {
             ShowVehicleTypeModal();
         });
@@ -161,14 +175,14 @@
                 }
 
                 $('#vehicleTypeModal').find('.modal-title').text('Update Vehicle Type');
-                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitIcon').addClass('fa-pencil');
+                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitIcon').removeClass('fa-plus').addClass('fa-pencil');
                 $('#vehicleTypeModal').find('#vehicleTypeModalSubmitText').text('Update');
             }
             else {
                 newRecord = true; //this means it is a new record
 
                 $('#vehicleTypeModal').find('.modal-title').text('Add New Vehicle Type');
-                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitIcon').addClass('fa-plus');
+                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitIcon').removeClass('fa-pencil').addClass('fa-plus');
                 $('#vehicleTypeModal').find('#vehicleTypeModalSubmitText').text('Save');
             }
 
@@ -176,9 +190,9 @@
         }
 
         $("#vehicleTypeModalForm").on('submit', (function (event) {
-
+            debugger;
             if ($("#vehicleTypeModalForm").valid()) {
-
+                debugger;
                 if (newRecord) {
                     SaveNewRecord(event);
                 }
@@ -187,29 +201,40 @@
                 }
             }
             else {
-                $("#newVehicleTypeFormErrors").show();
-                $("#newVehicleTypeFormErrorsMessages").html("Please fill the required form fields.");
+                DisplayError("Please fill the required form fields.");
             }
         }));
 
-        var SelectedRow;
-        //getting Row data on Row Click in Table
-        vehicleTypesTable.on('click', 'tr', function () {
+        ////getting Row data on Row Click in Table
+        //vehicleTypesTable.on('click', 'tr', function () {
 
+        //    var selectedVehicleType = vehicleTypesTable.row(this).data();
+
+        //    var vehicleTypeId = selectedVehicleType["ID"];
+        //    var vehicleTypeName = selectedVehicleType["Name"];
+        //    var vehicleTypeIsActive = selectedVehicleType["IsActive"];
+
+        //    SelectedRow = this;
+
+        //    ShowVehicleTypeModal(vehicleTypeId, vehicleTypeName, vehicleTypeIsActive);
+        //});
+
+        vehicleTypesTable.on('click', 'td:eq(5)', function (e) {
+            console.log('ello');
+            debugger;
             var selectedVehicleType = vehicleTypesTable.row(this).data();
 
-            var vehicleTypeId = selectedVehicleType["ID"];
-            var vehicleTypeName = selectedVehicleType["Name"];
-            var vehicleTypeIsActive = selectedVehicleType["IsActive"];
+                var vehicleTypeId = selectedVehicleType["ID"];
+                var vehicleTypeName = selectedVehicleType["Name"];
+                var vehicleTypeIsActive = selectedVehicleType["IsActive"];
 
-            SelectedRow = this;
+                SelectedRow = vehicleTypesTable.row(this);
 
-            ShowVehicleTypeModal(vehicleTypeId, vehicleTypeName, vehicleTypeIsActive);
+                //ShowVehicleTypeModal(vehicleTypeId, vehicleTypeName, vehicleTypeIsActive);
         });
 
         function SaveNewRecord(event)
         {
-            debugger;
             event.preventDefault();
             var jqxhr = $.ajax(
                         {
@@ -227,19 +252,14 @@
                                 if (data.Successful) {
                                     vehicleTypesTable.row.add(data.VehicleType).draw(false);
 
-                                    //refresh the fields in here if you like
-                                    $("#vehicleTypeFormErrorsMessages").html("");
-                                    $("#vehicleTypeFormErrors").hide();
                                     $('#vehicleTypeModal').modal('toggle');
                                 }
                                 else {
-                                    $("#vehicleTypeFormErrors").show();
-                                    $("#vehicleTypeFormErrorsMessages").html(data.Exception);
+                                    DisplayError(data.Exception);
                                 }
                             })
                             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                                $("#vehicleTypeFormErrors").show();
-                                $("#vehicleTypeFormErrorsMessages").html(errorThrown);
+                                DisplayError(errorThrown);
                             })
                             .always(function () {
                             });
@@ -265,23 +285,28 @@
                                 if (data.Successful) {
                                     vehicleTypesTable.row(SelectedRow).data(data.VehicleType).invalidate().draw();
 
-                                    //refresh the fields in here if you like
-                                    $("#vehicleTypeModalFormErrorsMessages").html("");
-                                    $("#vehicleTypeModalFormErrors").hide();
                                     $('#vehicleTypeModal').modal('toggle');
                                 }
                                 else {
-                                    $("#vehicleTypeModalFormErrors").show();
-                                    $("#vehicleTypeModalFormErrorsMessages").html(data.Exception);
+                                    DisplayError(data.Exception);
                                 }
                             })
                             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                                 debugger;
-                                $("#vehicleTypeModalFormErrors").show();
-                                $("#vehicleTypeModalFormErrorsMessages").html(errorThrown);
+                                DisplayError(errorThrown);
                             })
                             .always(function () {
                             });
+        }
+
+        function DisplayError(error) {
+            $("#vehicleTypeModalFormErrors").show();
+            $("#vehicleTypeModalFormErrorsMessages").html(error);
+
+            $("#vehicleTypeModalFormErrors").delay(5000).fadeOut('slow', function () {
+                $("#vehicleTypeModalFormErrorsMessages").html("");
+            });
+
         }
     });
 </script>
