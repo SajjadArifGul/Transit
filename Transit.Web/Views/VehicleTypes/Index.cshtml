@@ -143,6 +143,7 @@
 <script>
     $(document).ready(function () {
 
+        //setting up DataTable and Column Rendering and Getting All the required Data 
         var vehicleTypesTable = $("#VehicleTypesTable").DataTable({
             paging: true,
             sort: true,
@@ -295,6 +296,7 @@
             }
         }));
 
+        //getting Row data on Row Click in Table
         vehicleTypesTable.on('click', 'tr', function () {
 
             var selectedVehicleType = vehicleTypesTable.row(this).data();
@@ -303,9 +305,14 @@
             var vehicleTypeName = selectedVehicleType["Name"];
             var vehicleTypeIsActive = selectedVehicleType["IsActive"];
 
+            SelectedRow = this;
+
             ShowVehicleTypeModal(vehicleTypeId, vehicleTypeName, vehicleTypeIsActive);
         });
 
+        var SelectedRow;
+
+        //displaying Vehicle Type Data in Modal
         function ShowVehicleTypeModal(ID, Name, Status)
         {
             if (ID) {
@@ -326,30 +333,14 @@
             $('#updateVehicleTypeModal').modal('toggle');
         }
 
-        $('#updateVehicleTypeModal').on('show.bs.modal', function (event) {
-            debugger;
+        function SaveNewRecord()
+        {
 
-            
+        }
 
-            //var button = $(event.relatedTarget);
-            //var vehicleTypeId = button.data('id');
-            //var vehicleTypeName = button.closest("tr").find(".name").text();
-            //var vehicleTypeIsActive = button.closest("tr").find(".isActive").children().first().text();
-            //RowID = button.closest("tr").attr("id");
-            //var modal = $(this);
-            //modal.find('#updateVehicleTypeID').val(vehicleTypeId);
-            //modal.find('#updateVehicleTypeName').val(vehicleTypeName);
+        function UpdateRecord() {
 
-            //if(vehicleTypeIsActive == "Yes")
-            //{
-            //    $("#updateVehicleTypeIsActive").prop('checked', true);
-            //}
-            //else
-            //{
-            //    $("#updateVehicleTypeIsActive").prop('checked', false);
-            //}
-
-        });
+        }
 
         $("#updateVehicleTypeModalForm").on('submit', (function (event) {
             if ($("#updateVehicleTypeModalForm").valid()) {
@@ -369,14 +360,7 @@
                                     console.log(data);
 
                                     if (data.Successful) {
-                                        vehicleTypesTable.row($("#updateVehicleTypeID").val()-1).data([
-                                            data.VehicleType["ID"],
-                                            "<strong>" + data.VehicleType["Name"] + "</strong>",
-                                            GetFormattedStatus(data.VehicleType["IsActive"]),
-                                            data.VehicleType["CreatedBy"] + "<br />" + GetFormattedDate(data.VehicleType["CreatedOn"]),
-                                            data.VehicleType["ModifiedBy"] + "<br />" + GetFormattedDate(data.VehicleType["ModifiedOn"]),
-                                            "<button data-id=\"" + data.VehicleType["ID"] + "\" data-toggle=\"modal\" data-target=\"#updateVehicleTypeModal\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
-                                        ]).invalidate().draw();
+                                        vehicleTypesTable.row(SelectedRow).data(data.VehicleType).invalidate().draw();
 
                                         //refresh the fields in here if you like
                                         $("#updateVehicleTypeFormErrorsMessages").html("");
@@ -427,7 +411,6 @@
             }
         });
 
-        //$('#responsive-modal').modal('toggle');//its working
         $("#AddVehicleTypeModelSubmitButton").click(function () {
             debugger;
 
