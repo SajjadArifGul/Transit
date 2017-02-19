@@ -28,7 +28,8 @@ function GetFormattedDate(date) {
                 fHour = fHour % 12;
             }
 
-            return fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm;
+            //return fDate + "/" + fMonth + "/" + fYear + " " + padding("00", fHour) + ":" + padding("00", fMinute) + ":" + padding("00", fSecond) + " " + ampm;
+            return fDate + "/" + fMonth + "/" + fYear + " " + fHour + ":" + fMinute + ":" + fSecond + " " + ampm;
         }
     }
 }

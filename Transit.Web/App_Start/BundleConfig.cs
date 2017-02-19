@@ -50,11 +50,13 @@ namespace Transit.Web
                       "~/Theme/vendors/bower_components/morris.js/morris.css",
                       "~/Theme/vendors/bower_components/datatables/media/css/jquery.dataTables.min.css",
                       "~/Theme/vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.css",
+                      "~/Theme/vendors/bower_components/sweetalert/dist/sweetalert.css",
                       "~/Theme/dist/css/style.css"));
 
 
             bundles.Add(new ScriptBundle("~/bundles/Theme").Include(
                       "~/Theme/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js",
+                      "~/Theme/vendors/bower_components/sweetalert/dist/sweetalert.min.js",
                       "~/Scripts/Custom/functions.js",
                       "~/Theme/vendors/bower_components/datatables/media/js/jquery.dataTables.min.js",
                       "~/Theme/dist/js/jquery.slimscroll.js",

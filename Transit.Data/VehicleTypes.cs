@@ -56,8 +56,7 @@ namespace Transit.Data
                 return false;
             }
         }
-
-
+        
         public bool Delete(VehicleType vehicleType)
         {
             try
@@ -66,9 +65,8 @@ namespace Transit.Data
 
                 if (VehicleTypeInDB != null)
                 {
-                    VehicleTypeInDB.IsActive = false; //we will not delete. Just change status to false.
+                    db.Entry(VehicleTypeInDB).State = System.Data.Entity.EntityState.Deleted;  //should be updated.
 
-                    db.Entry(VehicleTypeInDB).State = System.Data.Entity.EntityState.Modified;  //should be updated.
                     db.SaveChanges();
                     return true;
                 }

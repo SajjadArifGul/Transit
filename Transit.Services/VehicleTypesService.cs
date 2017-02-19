@@ -62,5 +62,10 @@ namespace Transit.Services
         {
             return vehicleTypes.Delete(vehicleType);
         }
+
+        public bool DeleteVehicleTypeByID(int ID)
+        {
+            return vehicleTypes.Delete(new VehicleType() { ID = ID });
+        }
     }
 }

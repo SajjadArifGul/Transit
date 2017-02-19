@@ -81,13 +81,20 @@
     var vehicleTypesTable;
     var newRecord;
     var SelectedRow;
+
+    var vehicleTypeId;
+    var vehicleTypeName;
+    var vehicleTypeIsActive;
     
+    $("#newVehicleTypeButton").click(function () {
+        ShowVehicleTypeModal();
+    });
+
     //displaying Vehicle Type Data in Modal
     function ShowVehicleTypeModal(ID, Name, Status, RowIndex) {
         var vehicleTypeModal = $('#vehicleTypeModal');
 
         if (ID) {
-
             newRecord = false; //this means it is not a new record
             SelectedRow = RowIndex;
 
@@ -119,6 +126,25 @@
         $('#vehicleTypeModal').modal('toggle');
     }
 
+    $("#vehicleTypeModalForm").on('submit', (function (event) {
+        debugger;
+        if ($("#vehicleTypeModalForm").valid()) {
+            vehicleTypeId = $('#vehicleTypeModalID').val();
+            vehicleTypeName = $('#vehicleTypeModalName').val();
+            vehicleTypeIsActive = $("#vehicleTypeModalIsActive").is(':checked');
+            debugger;
+            if (newRecord) {
+                SaveNewRecord(vehicleTypeName, vehicleTypeIsActive, event);
+            }
+            else {
+                UpdateRecord(vehicleTypeId, vehicleTypeName, vehicleTypeIsActive, event);
+            }
+        }
+        else {
+            DisplayError("Please fill the required form fields.");
+        }
+    }));
+
     function RefreshFields() {
         $("#vehicleTypeModalID").val("");
         $("#vehicleTypeModalName").val("");
@@ -129,26 +155,7 @@
 
         $("#vehicleTypeModalFormErrorsMessages").html("");
     }
-
-    $("#newVehicleTypeButton").click(function () {
-        ShowVehicleTypeModal();
-    });
-
-    $("#vehicleTypeModalForm").on('submit', (function (event) {
-        debugger;
-        if ($("#vehicleTypeModalForm").valid()) {
-            debugger;
-            if (newRecord) {
-                SaveNewRecord(event);
-            }
-            else {
-                UpdateRecord(event);
-            }
-        }
-        else {
-            DisplayError("Please fill the required form fields.");
-        }
-    }));
+    
 
     function DisplayError(error) {
         $("#vehicleTypeModalFormErrors").show();
@@ -160,14 +167,14 @@
     }
 
 
-    function SaveNewRecord(event) {
+    function SaveNewRecord(name, status, event) {
         event.preventDefault();
         var jqxhr = $.ajax(
                     {
                         type: "post",
                         data: {
-                            Name: $("#vehicleTypeModalName").val(),
-                            IsActive: $("#vehicleTypeModalIsActive").is(':checked')
+                            Name: name,
+                            IsActive: status //$("#vehicleTypeModalIsActive").is(':checked')
                         },
                         url: "AddNewVehicleTypeAJAX"
                     })
@@ -191,16 +198,16 @@
                         });
     }
 
-    function UpdateRecord(event) {
+    function UpdateRecord(id, name, status, event) {
         debugger;
         event.preventDefault();
         var jqxhr = $.ajax(
                     {
                         type: "post",
                         data: {
-                            ID: $("#vehicleTypeModalID").val(),
-                            Name: $("#vehicleTypeModalName").val(),
-                            IsActive: $("#vehicleTypeModalIsActive").is(':checked')
+                            ID: id,
+                            Name: name,
+                            IsActive: status
                         },
                         url: "UpdateVehicleTypeAJAX"
                     })
@@ -226,7 +233,6 @@
     }
 
     $(document).ready(function () {
-        
         //setting up DataTable and Column Rendering and Getting All the required Data
         vehicleTypesTable = $("#VehicleTypesTable").DataTable({
             paging: true,
@@ -280,7 +286,7 @@
                     'data': 'ID',
                     'render': function (ID, type, row, meta) {
                         debugger;
-                        return "<button onClick=\"ShowVehicleTypeModal('" + ID + "','" + row["Name"] + "','" + row["IsActive"] + "', '" + meta.row + "')\" class=\"meraVehicleTypeButton btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button onclick=\"EditRecord()\" class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
+                        return "<button onClick=\"ShowVehicleTypeModal('" + ID + "','" + row["Name"] + "','" + row["IsActive"] + "', '" + meta.row + "')\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button onClick=\"DeleteRecord('" + ID + "','" + row["Name"] + "', '" + meta.row + "')\" class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
                     },
                     "searchable": false,
                     "sortable": false
@@ -289,4 +295,59 @@
 
         });
     });
+
+    function DeleteRecord(ID, Name, RowIndex) {
+        debugger;
+        swal({
+            title: "Warning!",
+            text: "Are you sure you want to delete '"+Name+"' Vehicle Type record?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#fcb03b",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                ConfirmedDelete(ID, Name, RowIndex);
+            }
+        });
+    }
+
+    function ConfirmedDelete(id, Name, RowIndex)
+    {
+        debugger;
+        var jqxhr = $.ajax(
+                    {
+                        type: "post",
+                        data: {
+                            ID: id
+                        },
+                        url: "DeleteVehicleTypeAJAX"
+                    })
+                        .done(function (data) {
+                            debugger;
+                            console.log(data);
+
+                            if (data.Successful) {
+                                vehicleTypesTable.row(RowIndex).remove().invalidate().draw();
+
+                                swal("Deleted!", "Vehicle Type Delete.", "success");
+                            }
+                            else {
+                                swal("Error!", "Unable to Delete Vehicle Type. " + data.Exception, "error");
+                            }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                            debugger;
+                            vehicleTypesTable.row(RowIndex).remove().invalidate().draw();
+
+                            swal("Error!", errorThrown, "error");
+                        })
+                        .always(function () {
+                        });
+
+    }
+
 </script>

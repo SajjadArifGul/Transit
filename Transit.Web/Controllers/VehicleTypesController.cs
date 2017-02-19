@@ -185,6 +185,36 @@ namespace Transit.Web.Controllers
             result.Data = record;
             return result;
         }
+        
+        [HttpPost]
+        public JsonResult DeleteVehicleTypeAJAX(int ID)
+        {
+            JsonResult result = new JsonResult();
+
+            VehicleTypeRecord record = new VehicleTypeRecord();
+
+            if (ID > 0)
+            {
+                if (VehicleTypesService.Instance.DeleteVehicleTypeByID(ID))
+                {
+                    record.Successful = true;
+                }
+                else
+                {
+                    record.Successful = false;
+                    record.Message = "An error occurred while deleting Vehicle Type record.";
+                }
+            }
+            else
+            {
+                record.Successful = false;
+                record.Exception = "Vehicle Type Data is incomplete.";
+            }
+
+            result.Data = record;
+            return result;
+        }
+
 
         [HttpGet]
         public ActionResult EditVehicleType(int VehicleTypeID)
