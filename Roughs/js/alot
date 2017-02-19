@@ -1,0 +1,51 @@
+//getting Row data on Row Click in Table
+        var vehicleTypeId;
+        var vehicleTypeName;
+        var vehicleTypeIsActive;
+        //vehicleTypesTable.on('click', 'tr', function () {
+        //    debugger;
+        //    SelectedRow = this;
+        //    var selectedVehicleType = vehicleTypesTable.row(SelectedRow).data();
+
+        //    vehicleTypeId = selectedVehicleType["ID"];
+        //    vehicleTypeName = selectedVehicleType["Name"];
+        //    vehicleTypeIsActive = selectedVehicleType["IsActive"];
+
+        //});
+
+        vehicleTypesTable.on('click', 'td', function () {
+            //debugger;
+            console.log(this);
+        });
+
+        //$('#vehicleTypeModal').on('show.bs.modal', function (event) {
+        //    debugger;
+        //    var modal = $(this);
+        //    modal.find('#vehicleTypeModalID').val(vehicleTypeId);
+        //    modal.find('#vehicleTypeModalName').val(vehicleTypeName);
+
+        //    if (vehicleTypeIsActive == true) {
+        //        $("#vehicleTypeModalIsActive").prop('checked', true);
+        //    }
+        //    else {
+        //        $("#vehicleTypeModalIsActive").prop('checked', false);
+        //    }
+
+        //    //event.preventDefault();
+        //    //ShowVehicleTypeModal(vehicleTypeId, vehicleTypeName, vehicleTypeIsActive);
+        //});
+
+
+        //vehicleTypesTable.on('click', 'td:eq(5)', function (e) {
+        //    console.log('ello');
+        //    debugger;
+        //    var selectedVehicleType = vehicleTypesTable.row(this).data();
+
+        //        var vehicleTypeId = selectedVehicleType["ID"];
+        //        var vehicleTypeName = selectedVehicleType["Name"];
+        //        var vehicleTypeIsActive = selectedVehicleType["IsActive"];
+
+        //        SelectedRow = vehicleTypesTable.row(this);
+
+        //        //ShowVehicleTypeModal(vehicleTypeId, vehicleTypeName, vehicleTypeIsActive);
+        //});

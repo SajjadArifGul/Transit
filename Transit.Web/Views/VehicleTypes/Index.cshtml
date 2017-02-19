@@ -31,8 +31,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-
+                    </div>                 
                     <hr />
                     <button id="newVehicleTypeButton" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-plus"></i> </span><span class="btn-text">Add New Vehicle Type</span></button>
                 </div>
@@ -78,25 +77,158 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
+<script type="text/javascript">
+    var vehicleTypesTable;
+    var newRecord;
+    var SelectedRow;
+    
+    //displaying Vehicle Type Data in Modal
+    function ShowVehicleTypeModal(ID, Name, Status, RowIndex) {
+        var vehicleTypeModal = $('#vehicleTypeModal');
 
-        var newRecord;
-        var SelectedRow;
+        if (ID) {
 
-        function RefreshFields() {
-            $("#vehicleTypeModalID").val("");
-            $("#vehicleTypeModalName").val("");
-            $("#vehicleTypeModalIsActive").prop('checked', false);
+            newRecord = false; //this means it is not a new record
+            SelectedRow = RowIndex;
 
-            newRecord = false;
-            SelectedRow = null;
+            $('#vehicleTypeModalID').val(ID);
 
-            $("#vehicleTypeModalFormErrorsMessages").html("");
+            if (Name != undefined && Name.length > 0) {
+                $('#vehicleTypeModalName').val(Name);
+            }
+
+            if (Status == true || Status == "true") {
+                $("#vehicleTypeModalIsActive").prop('checked', true);
+            }
+            else {
+                $("#vehicleTypeModalIsActive").prop('checked', false);
+            }
+
+            $('#vehicleTypeModal').find('.modal-title').text('Update Vehicle Type');
+            $('#vehicleTypeModal').find('#vehicleTypeModalSubmitIcon').removeClass('fa-plus').addClass('fa-pencil');
+            $('#vehicleTypeModal').find('#vehicleTypeModalSubmitText').text('Update');
+        }
+        else {
+            newRecord = true; //this means it is a new record
+
+            $('#vehicleTypeModal').find('.modal-title').text('Add New Vehicle Type');
+            $('#vehicleTypeModal').find('#vehicleTypeModalSubmitIcon').removeClass('fa-pencil').addClass('fa-plus');
+            $('#vehicleTypeModal').find('#vehicleTypeModalSubmitText').text('Save');
         }
 
-        //setting up DataTable and Column Rendering and Getting All the required Data 
-        var vehicleTypesTable = $("#VehicleTypesTable").DataTable({
+        $('#vehicleTypeModal').modal('toggle');
+    }
+
+    function RefreshFields() {
+        $("#vehicleTypeModalID").val("");
+        $("#vehicleTypeModalName").val("");
+        $("#vehicleTypeModalIsActive").prop('checked', false);
+
+        newRecord = false;
+        SelectedRow = null;
+
+        $("#vehicleTypeModalFormErrorsMessages").html("");
+    }
+
+    $("#newVehicleTypeButton").click(function () {
+        ShowVehicleTypeModal();
+    });
+
+    $("#vehicleTypeModalForm").on('submit', (function (event) {
+        debugger;
+        if ($("#vehicleTypeModalForm").valid()) {
+            debugger;
+            if (newRecord) {
+                SaveNewRecord(event);
+            }
+            else {
+                UpdateRecord(event);
+            }
+        }
+        else {
+            DisplayError("Please fill the required form fields.");
+        }
+    }));
+
+    function DisplayError(error) {
+        $("#vehicleTypeModalFormErrors").show();
+        $("#vehicleTypeModalFormErrorsMessages").html(error);
+
+        $("#vehicleTypeModalFormErrors").delay(5000).fadeOut('slow', function () {
+            $("#vehicleTypeModalFormErrorsMessages").html("");
+        });
+    }
+
+
+    function SaveNewRecord(event) {
+        event.preventDefault();
+        var jqxhr = $.ajax(
+                    {
+                        type: "post",
+                        data: {
+                            Name: $("#vehicleTypeModalName").val(),
+                            IsActive: $("#vehicleTypeModalIsActive").is(':checked')
+                        },
+                        url: "AddNewVehicleTypeAJAX"
+                    })
+                        .done(function (data) {
+                            debugger;
+                            console.log(data);
+
+                            if (data.Successful) {
+                                vehicleTypesTable.row.add(data.VehicleType).draw(false);
+
+                                $('#vehicleTypeModal').modal('toggle');
+                            }
+                            else {
+                                DisplayError(data.Exception);
+                            }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                            DisplayError(errorThrown);
+                        })
+                        .always(function () {
+                        });
+    }
+
+    function UpdateRecord(event) {
+        debugger;
+        event.preventDefault();
+        var jqxhr = $.ajax(
+                    {
+                        type: "post",
+                        data: {
+                            ID: $("#vehicleTypeModalID").val(),
+                            Name: $("#vehicleTypeModalName").val(),
+                            IsActive: $("#vehicleTypeModalIsActive").is(':checked')
+                        },
+                        url: "UpdateVehicleTypeAJAX"
+                    })
+                        .done(function (data) {
+                            debugger;
+                            console.log(data);
+
+                            if (data.Successful) {
+                                vehicleTypesTable.row(SelectedRow).data(data.VehicleType).invalidate().draw();
+
+                                $('#vehicleTypeModal').modal('toggle');
+                            }
+                            else {
+                                DisplayError(data.Exception);
+                            }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                            debugger;
+                            DisplayError(errorThrown);
+                        })
+                        .always(function () {
+                        });
+    }
+
+    $(document).ready(function () {
+        
+        //setting up DataTable and Column Rendering and Getting All the required Data
+        vehicleTypesTable = $("#VehicleTypesTable").DataTable({
             paging: true,
             sort: true,
             searching: true,
@@ -107,8 +239,15 @@
                 dataSrc: "" //everything we received back in ajax call is source for our data
             },
             columns: [
-                { 'data': 'ID' },
-                { 'data': 'Name' },
+                {
+                    'data': 'ID'
+                },
+                {
+                    'data': 'Name',
+                    'render': function (Name) {
+                        return "<strong>" + Name + "</strong>";
+                    }
+                },
                 {
                     'data': 'IsActive',
                     'render': function (status) {
@@ -139,174 +278,15 @@
                 },
                 {
                     'data': 'ID',
-                    'render': function (ID) {
-                        return "<button class=\"updateVehicleTypeButton btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
+                    'render': function (ID, type, row, meta) {
+                        debugger;
+                        return "<button onClick=\"ShowVehicleTypeModal('" + ID + "','" + row["Name"] + "','" + row["IsActive"] + "', '" + meta.row + "')\" class=\"meraVehicleTypeButton btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button onclick=\"EditRecord()\" class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
                     },
                     "searchable": false,
-                    "sortable": false                    
+                    "sortable": false
                 },
             ],
 
         });
-
-        $("#newVehicleTypeButton").click(function () {
-            ShowVehicleTypeModal();
-        });
-
-        //displaying Vehicle Type Data in Modal
-        function ShowVehicleTypeModal(ID, Name, Status) {
-            var vehicleTypeModal = $('#vehicleTypeModal');
-
-            if (ID) {
-
-                newRecord = false; //this means it is not a new record
-
-                $('#vehicleTypeModalID').val(ID);
-
-                if (Name != undefined && Name.length > 0) {
-                    $('#vehicleTypeModalName').val(Name);
-                }
-
-                if (Status == true) {
-                    $("#vehicleTypeModalIsActive").prop('checked', true);
-                }
-                else {
-                    $("#vehicleTypeModalIsActive").prop('checked', false);
-                }
-
-                $('#vehicleTypeModal').find('.modal-title').text('Update Vehicle Type');
-                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitIcon').removeClass('fa-plus').addClass('fa-pencil');
-                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitText').text('Update');
-            }
-            else {
-                newRecord = true; //this means it is a new record
-
-                $('#vehicleTypeModal').find('.modal-title').text('Add New Vehicle Type');
-                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitIcon').removeClass('fa-pencil').addClass('fa-plus');
-                $('#vehicleTypeModal').find('#vehicleTypeModalSubmitText').text('Save');
-            }
-
-            $('#vehicleTypeModal').modal('toggle');
-        }
-
-        $("#vehicleTypeModalForm").on('submit', (function (event) {
-            debugger;
-            if ($("#vehicleTypeModalForm").valid()) {
-                debugger;
-                if (newRecord) {
-                    SaveNewRecord(event);
-                }
-                else{
-                    UpdateRecord(event);
-                }
-            }
-            else {
-                DisplayError("Please fill the required form fields.");
-            }
-        }));
-
-        ////getting Row data on Row Click in Table
-        //vehicleTypesTable.on('click', 'tr', function () {
-
-        //    var selectedVehicleType = vehicleTypesTable.row(this).data();
-
-        //    var vehicleTypeId = selectedVehicleType["ID"];
-        //    var vehicleTypeName = selectedVehicleType["Name"];
-        //    var vehicleTypeIsActive = selectedVehicleType["IsActive"];
-
-        //    SelectedRow = this;
-
-        //    ShowVehicleTypeModal(vehicleTypeId, vehicleTypeName, vehicleTypeIsActive);
-        //});
-
-        vehicleTypesTable.on('click', 'td:eq(5)', function (e) {
-            console.log('ello');
-            debugger;
-            var selectedVehicleType = vehicleTypesTable.row(this).data();
-
-                var vehicleTypeId = selectedVehicleType["ID"];
-                var vehicleTypeName = selectedVehicleType["Name"];
-                var vehicleTypeIsActive = selectedVehicleType["IsActive"];
-
-                SelectedRow = vehicleTypesTable.row(this);
-
-                //ShowVehicleTypeModal(vehicleTypeId, vehicleTypeName, vehicleTypeIsActive);
-        });
-
-        function SaveNewRecord(event)
-        {
-            event.preventDefault();
-            var jqxhr = $.ajax(
-                        {
-                            type: "post",
-                            data: {
-                                Name: $("#vehicleTypeModalName").val(),
-                                IsActive: $("#vehicleTypeModalIsActive").is(':checked')
-                            },
-                            url: "AddNewVehicleTypeAJAX"
-                        })
-                            .done(function (data) {
-                                debugger;
-                                console.log(data);
-
-                                if (data.Successful) {
-                                    vehicleTypesTable.row.add(data.VehicleType).draw(false);
-
-                                    $('#vehicleTypeModal').modal('toggle');
-                                }
-                                else {
-                                    DisplayError(data.Exception);
-                                }
-                            })
-                            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                                DisplayError(errorThrown);
-                            })
-                            .always(function () {
-                            });
-        }
-
-        function UpdateRecord(event) {
-            debugger;
-            event.preventDefault();
-            var jqxhr = $.ajax(
-                        {
-                            type: "post",
-                            data: {
-                                ID: $("#vehicleTypeModalID").val(),
-                                Name: $("#vehicleTypeModalName").val(),
-                                IsActive: $("#vehicleTypeModalIsActive").is(':checked')
-                            },
-                            url: "UpdateVehicleTypeAJAX"
-                        })
-                            .done(function (data) {
-                                debugger;
-                                console.log(data);
-
-                                if (data.Successful) {
-                                    vehicleTypesTable.row(SelectedRow).data(data.VehicleType).invalidate().draw();
-
-                                    $('#vehicleTypeModal').modal('toggle');
-                                }
-                                else {
-                                    DisplayError(data.Exception);
-                                }
-                            })
-                            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                                debugger;
-                                DisplayError(errorThrown);
-                            })
-                            .always(function () {
-                            });
-        }
-
-        function DisplayError(error) {
-            $("#vehicleTypeModalFormErrors").show();
-            $("#vehicleTypeModalFormErrorsMessages").html(error);
-
-            $("#vehicleTypeModalFormErrors").delay(5000).fadeOut('slow', function () {
-                $("#vehicleTypeModalFormErrorsMessages").html("");
-            });
-
-        }
     });
 </script>
