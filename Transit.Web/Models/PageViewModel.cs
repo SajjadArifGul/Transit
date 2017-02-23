@@ -10,5 +10,7 @@ namespace Transit.Web.Models
     {
         public string Title { get; set; }
         public List<Link> BreadCrumbs { get; set; }
+        public bool BreadCrumbsExternal { get; set; }
+        public string BreadCrumbsExternalLink { get; set; }
     }
 }

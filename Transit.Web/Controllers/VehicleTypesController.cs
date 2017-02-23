@@ -11,6 +11,7 @@ using Transit.Web.Models;
 
 namespace Transit.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class VehicleTypesController : Controller
     {
         public bool VerifyModel(VehicleTypeViewModel model)
@@ -49,8 +50,7 @@ namespace Transit.Web.Controllers
 
             return model;
         }
-
-        // GET: VehicleTypes
+        
         public ActionResult Index()
         {
             return View(GetVehicleTypesModel());
@@ -65,34 +65,7 @@ namespace Transit.Web.Controllers
 
             return result;
         }
-
-        [HttpGet]
-        public ActionResult AddNewVehicleType()
-        {
-            return View("_AddNewVehicleType", "_NoLayout", new VehicleTypeViewModel());
-        }
-
-        [HttpPost]
-        public ActionResult AddNewVehicleType(VehicleTypeViewModel model)
-        {
-            if (VerifyModel(model))
-            {
-                VehicleType vehicleType = new VehicleType()
-                {
-                    Name = model.Name,
-                    IsActive = model.IsActive,
-                    CreatedBy = User.Identity.GetUserName(),
-                    CreatedOn = DateTime.Now,
-                    ModifiedBy = User.Identity.GetUserName(),
-                    ModifiedOn = DateTime.Now
-                };
-
-                VehicleTypesService.Instance.AddNewVehicleType(vehicleType);
-            }
-
-            return View("Index", GetVehicleTypesModel());
-        }
-
+        
         [HttpPost]
         public JsonResult AddNewVehicleTypeAJAX(VehicleTypeViewModel model)
         {
@@ -102,39 +75,33 @@ namespace Transit.Web.Controllers
 
             if (VerifyModel(model))
             {
-                List<VehicleType> VehicleTypes = VehicleTypesService.Instance.GetAllVehicleTypes();
-
-                foreach (VehicleType vehicleType in VehicleTypes)
+                if (VehicleTypesService.Instance.GetVehicleTypeByName(model.Name) != null)
                 {
-                    if (vehicleType.Name.ToLower() == model.Name.ToLower())
-                    {
-                        record.Successful = false;
-                        record.Exception = "Vehicle Type with name " + model.Name + " already exists.";
-
-                        result.Data = record;
-                        return result;
-                    }
-                }
-
-                VehicleType newVehicleType = new VehicleType()
-                {
-                    Name = model.Name,
-                    IsActive = model.IsActive,
-                    CreatedBy = User.Identity.GetUserName(),
-                    CreatedOn = DateTime.Now,
-                    ModifiedBy = User.Identity.GetUserName(),
-                    ModifiedOn = DateTime.Now
-                };
-
-                if (VehicleTypesService.Instance.AddNewVehicleType(newVehicleType))
-                {
-                    record.Successful = true;
-                    record.VehicleType = VehicleTypesService.Instance.GetVehicleTypeByName(newVehicleType.Name);
+                    record.Successful = false;
+                    record.Exception = "Vehicle Type with name " + model.Name + " already exists.";
                 }
                 else
                 {
-                    record.Successful = false;
-                    record.Message = "An error occurred while adding new Vehicle Type record.";
+                    VehicleType newVehicleType = new VehicleType()
+                    {
+                        Name = model.Name,
+                        IsActive = model.IsActive,
+                        CreatedBy = User.Identity.GetUserName(),
+                        CreatedOn = DateTime.Now,
+                        ModifiedBy = User.Identity.GetUserName(),
+                        ModifiedOn = DateTime.Now
+                    };
+
+                    if (VehicleTypesService.Instance.AddNewVehicleType(newVehicleType))
+                    {
+                        record.Successful = true;
+                        record.VehicleType = VehicleTypesService.Instance.GetVehicleTypeByName(newVehicleType.Name);
+                    }
+                    else
+                    {
+                        record.Successful = false;
+                        record.Message = "An error occurred while adding "+newVehicleType.Name+" Vehicle Type record.";
+                    }
                 }
             }
             else
@@ -213,51 +180,6 @@ namespace Transit.Web.Controllers
 
             result.Data = record;
             return result;
-        }
-
-
-        [HttpGet]
-        public ActionResult EditVehicleType(int VehicleTypeID)
-        {
-            if (VehicleTypeID>0)
-            {
-                VehicleType vehicleType = VehicleTypesService.Instance.GetVehicleTypeByID(VehicleTypeID);
-
-                if (vehicleType != null)
-                {
-                    VehicleTypeViewModel model = new VehicleTypeViewModel()
-                    {
-                        Title = "Update Vehicle Type",
-
-                        ID = vehicleType.ID,
-                        Name = vehicleType.Name,
-                        IsActive = vehicleType.IsActive
-                    };
-
-                    return View("_EditVehicleType", "_NoLayout", model);
-                }
-                else return null;
-            }
-            else return null;
-        }
-
-        [HttpPost]
-        public ActionResult EditVehicleType(VehicleTypeViewModel model)
-        {
-            if (VerifyModel(model))
-            {
-                VehicleType vehicleType = new VehicleType()
-                {
-                    Name = model.Name,
-                    IsActive = model.IsActive,
-                    ModifiedBy = User.Identity.GetUserName(),
-                    ModifiedOn = DateTime.Now
-                };
-
-                VehicleTypesService.Instance.UpdateVehicleType(vehicleType);
-            }
-
-            return View("Index", GetVehicleTypesModel());
         }
     }
 }

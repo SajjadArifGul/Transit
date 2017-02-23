@@ -11,6 +11,10 @@
     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
         @if (Model.BreadCrumbs != null)
         {
+            if (Model.BreadCrumbsExternal && Model.BreadCrumbsExternalLink != null)
+            {
+                <a class="btn btn-default btn-outline btn-outline-white btn-rounded pull-right ml-20" href="@Model.BreadCrumbsExternalLink" target="_blank">reference</a>
+            }
                 <ol class="breadcrumb">
                     @foreach (var BreadCrumb in Model.BreadCrumbs)
                     {
