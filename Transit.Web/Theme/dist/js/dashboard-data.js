@@ -143,10 +143,9 @@ $(document).ready(function(){
 $(window).load(function(){
 	window.setTimeout(function(){
 		$.toast({
-			heading: 'Welcome to kenny',
-			text: 'Use the predefined ones, or specify a custom position object.',
-			position: 'top-right',
-			loaderBg:'#ea65a2',
+			heading: 'Welcome to Transit',
+			text: 'Lets work to get this done.',
+			loaderBg:'#8BC34A',
 			icon: 'success',
 			hideAfter: 3000, 
 			stack: 6
