@@ -47,32 +47,14 @@ namespace Transit.Services
         {
             return vehicleTypes.GetAll().Where(t => t.Name.ToLower() == Name.ToLower()).FirstOrDefault();
         }
-
-        public bool CheckVehicleTypesExistByID(int ID)
+        
+        public bool IsUpdateAllowed(int ID, string Name)
         {
-            if (vehicleTypes.GetAll().Where(t => t.ID == ID).FirstOrDefault() != null)
+            if (vehicleTypes.GetAll().Where(t => t.Name == Name).Where(t => t.ID != ID).FirstOrDefault() != null)
             {
-                return true;
+                return false;
             }
-            else return false;
-        }
-
-        public bool CheckVehicleTypesExistByName(string Name)
-        {
-            if (vehicleTypes.GetAll().Where(t => t.Name == Name).FirstOrDefault() != null)
-            {
-                return true;
-            }
-            else return false;
-        }
-
-        public bool CheckVehicleTypesExistByIDAndName(int ID, string Name)
-        {
-            if (vehicleTypes.GetAll().Where(t => t.Name == Name).Where(t => t.ID == ID).FirstOrDefault() != null)
-            {
-                return true;
-            }
-            else return false;
+            else return true;
         }
 
         public bool AddNewVehicleType(VehicleType vehicleType)

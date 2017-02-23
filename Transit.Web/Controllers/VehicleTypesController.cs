@@ -123,24 +123,32 @@ namespace Transit.Web.Controllers
 
             if (VerifyModel(model) && model.ID != 0)
             {
-                VehicleType updateVehicleType = new VehicleType()
+                if (VehicleTypesService.Instance.IsUpdateAllowed(model.ID, model.Name))
                 {
-                    ID = model.ID,
-                    Name = model.Name,
-                    IsActive = model.IsActive,
-                    ModifiedBy = User.Identity.GetUserName(),
-                    ModifiedOn = DateTime.Now
-                };
+                    VehicleType updateVehicleType = new VehicleType()
+                    {
+                        ID = model.ID,
+                        Name = model.Name,
+                        IsActive = model.IsActive,
+                        ModifiedBy = User.Identity.GetUserName(),
+                        ModifiedOn = DateTime.Now
+                    };
 
-                if (VehicleTypesService.Instance.UpdateVehicleType(updateVehicleType))
-                {
-                    record.Successful = true;
-                    record.VehicleType = VehicleTypesService.Instance.GetVehicleTypeByID(model.ID);
+                    if (VehicleTypesService.Instance.UpdateVehicleType(updateVehicleType))
+                    {
+                        record.Successful = true;
+                        record.VehicleType = VehicleTypesService.Instance.GetVehicleTypeByID(model.ID);
+                    }
+                    else
+                    {
+                        record.Successful = false;
+                        record.Message = "An error occurred while updating Vehicle Type record.";
+                    }
                 }
                 else
                 {
                     record.Successful = false;
-                    record.Message = "An error occurred while updating Vehicle Type record.";
+                    record.Exception = "Vehicle Type with name " + model.Name + " already exists.";
                 }
             }
             else
