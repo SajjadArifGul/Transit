@@ -9,4 +9,7 @@ namespace Transit.Web.Models
     public class HomeViewModel : PageViewModel
     {
     }
+    public class AboutViewModel : PageViewModel
+    {
+    }
 }

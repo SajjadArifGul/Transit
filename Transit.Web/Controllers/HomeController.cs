@@ -16,9 +16,8 @@ namespace Transit.Web.Controllers
 
             model.Title = "Home";
             model.BreadCrumbs = new List<Link>{
-                new Link() { Text="Dashboard" },
-                new Link() { Text="Home", URL="home" },
-                new Link() { Text="Dashboard", URL="home" },
+                new Link() { Text="Transit", URL="/" },
+                new Link() { Text="Home", URL="/" },
             };
 
             return View(model);
@@ -26,9 +25,15 @@ namespace Transit.Web.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            AboutViewModel model = new AboutViewModel();
 
-            return View();
+            model.Title = "About";
+            model.BreadCrumbs = new List<Link>{
+                new Link() { Text="Transit", URL="/" },
+                new Link() { Text="About", URL="/about" },
+            };
+
+            return View(model);
         }
 
         public ActionResult Contact()

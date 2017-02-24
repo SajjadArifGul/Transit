@@ -26,6 +26,36 @@ namespace Transit.Web
               );
 
             routes.MapRoute(
+              name: "About",
+              url: "about",
+              defaults: new { controller = "Home", action = "About" }
+              );
+
+            routes.MapRoute(
+              name: "Contact",
+              url: "contact",
+              defaults: new { controller = "Home", action = "Contact" }
+              );
+
+            routes.MapRoute(
+              name: "Privacy Policy",
+              url: "privacy-policy",
+              defaults: new { controller = "Home", action = "PrivacyPolicy" }
+              );
+
+            routes.MapRoute(
+              name: "TermsAndConditions",
+              url: "terms-and-conditions",
+              defaults: new { controller = "Home", action = "TermsAndConditions" }
+              );
+
+            routes.MapRoute(
+              name: "FAQs",
+              url: "faqs",
+              defaults: new { controller = "Home", action = "FAQs" }
+              );
+
+            routes.MapRoute(
               name: "VehicleTypes",
               url: "admin/vehicle-types",
               defaults: new { controller = "VehicleTypes", action = "Index" }
