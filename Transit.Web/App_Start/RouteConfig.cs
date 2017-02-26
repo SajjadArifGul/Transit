@@ -27,13 +27,13 @@ namespace Transit.Web
 
             routes.MapRoute(
               name: "About",
-              url: "about",
+              url: "about-us",
               defaults: new { controller = "Home", action = "About" }
               );
 
             routes.MapRoute(
               name: "Contact",
-              url: "contact",
+              url: "contact-us",
               defaults: new { controller = "Home", action = "Contact" }
               );
 
@@ -55,23 +55,29 @@ namespace Transit.Web
               defaults: new { controller = "Home", action = "FAQs" }
               );
 
-            routes.MapRoute(
-              name: "VehicleTypes",
-              url: "admin/vehicle-types",
-              defaults: new { controller = "VehicleTypes", action = "Index" }
-              );
+            //routes.MapRoute(
+            //  name: "VehicleTypes",
+            //  url: "admin/vehicle-types",
+            //  defaults: new { controller = "VehicleTypes", action = "Index" }
+            //  );
 
             routes.MapRoute(
               name: "VehicleTypesActions",
               url: "admin/vehicle-types/{action}",
-              defaults: new { controller = "VehicleTypes" }
+              defaults: new { controller = "VehicleTypes", action = "Index" }
               );
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "",
+                defaults: new { controller = "Home", action = "Index" }
               );
+
+            //routes.MapRoute(
+            //    name: "Default",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            //  );
         }
     }
 }

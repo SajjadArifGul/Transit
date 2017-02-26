@@ -51,6 +51,8 @@ namespace Transit.Web
                       "~/Theme/vendors/bower_components/datatables/media/css/jquery.dataTables.min.css",
                       "~/Theme/vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.css",
                       "~/Theme/vendors/bower_components/sweetalert/dist/sweetalert.css",
+                      "~/Theme/vendors/bower_components/owl.carousel/dist/assets/owl.carousel.min.css",
+                      "~/Theme/vendors/bower_components/owl.carousel/dist/assets/owl.theme.default.min.css",
                       "~/Theme/dist/css/style.css"));
 
 
@@ -73,7 +75,8 @@ namespace Transit.Web
                       "~/Theme/dist/js/morris-data.js",
                       "~/Theme/vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.js",
                       "~/Theme/dist/js/init.js",
-                      "~/Theme/dist/js/dashboard-data.js"));
+                      "~/Theme/dist/js/dashboard-data.js",
+                      "~/Theme/vendors/bower_components/owl.carousel/dist/owl.carousel.min.js"));
         }
     }
 }

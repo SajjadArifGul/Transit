@@ -27,10 +27,10 @@ namespace Transit.Web.Controllers
         {
             AboutViewModel model = new AboutViewModel();
 
-            model.Title = "About";
+            model.Title = "About Us";
             model.BreadCrumbs = new List<Link>{
                 new Link() { Text="Transit", URL="/" },
-                new Link() { Text="About", URL="/about" },
+                new Link() { Text="About", URL="/about-us" },
             };
 
             return View(model);
@@ -38,9 +38,15 @@ namespace Transit.Web.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ContactViewModel model = new ContactViewModel();
 
-            return View();
+            model.Title = "Contact Us";
+            model.BreadCrumbs = new List<Link>{
+                new Link() { Text="Transit", URL="/" },
+                new Link() { Text="Contact", URL="/contact-us" },
+            };
+
+            return View(model);
         }
     }
 }

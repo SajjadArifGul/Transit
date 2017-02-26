@@ -12,4 +12,7 @@ namespace Transit.Web.Models
     public class AboutViewModel : PageViewModel
     {
     }
+    public class ContactViewModel : PageViewModel
+    {
+    }
 }

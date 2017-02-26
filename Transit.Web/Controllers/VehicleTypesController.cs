@@ -61,8 +61,11 @@ namespace Transit.Web.Controllers
         {
             JsonResult result = new JsonResult();
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            result.Data = VehicleTypesService.Instance.GetAllVehicleTypes();
 
+            result.Data = new VehicleTypeRecord() {
+                VehicleTypesList = VehicleTypesService.Instance.GetAllVehicleTypes()
+            };
+            
             return result;
         }
         

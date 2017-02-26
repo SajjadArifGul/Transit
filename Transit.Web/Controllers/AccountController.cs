@@ -52,17 +52,13 @@ namespace Transit.Web.Controllers
             }
         }
 
-        //
-        // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View("Login", "_StandaloneLayout", new LoginViewModel());
         }
-
-        //
-        // POST: /Account/Login
+        
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
