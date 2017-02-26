@@ -11,6 +11,7 @@ namespace Transit.Web.Controllers
         // GET: Cities
         public ActionResult Index()
         {
+
             return View();
         }
     }

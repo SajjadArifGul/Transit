@@ -204,11 +204,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CitiesViewModels.cs" />
     <Compile Include="Models\HomeViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PageViewModel.cs" />
-    <Compile Include="Models\VehicleTypesViewModel.cs" />
+    <Compile Include="Models\VehicleTypesViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -282,10 +283,10 @@
     <Content Include="Views\VehicleTypes\Index.cshtml" />
     <Content Include="Views\VehicleTypes\_AddNewVehicleType.cshtml" />
     <Content Include="Views\VehicleTypes\_EditVehicleType.cshtml" />
+    <Content Include="Views\Cities\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Cities\" />
     <Folder Include="Views\Vehicle\" />
   </ItemGroup>
   <ItemGroup>
