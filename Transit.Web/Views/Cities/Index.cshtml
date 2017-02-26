@@ -1,7 +1,353 @@
-﻿
+﻿@model Transit.Web.Models.CitiesViewModel
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Model.Title;
 }
 
-<h2>Index</h2>
+@Html.Partial("_BreadCrumbs", Model)
 
+<!-- Cities Row -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default card-view">
+            <div class="panel-wrapper collapse in">
+                <div class="panel-body">
+                    <div class="table-wrap">
+                        <div class="table-responsive">
+                            <table id="CitiesTable" class="table display mb-30">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Country</th>
+                                        <th>IsActive</th>
+                                        <th>Created</th>
+                                        <th>CreatedOn</th>
+                                        <th>Modified</th>
+                                        <th>ModifiedOn</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr />
+                    <button id="newCityButton" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-plus"></i> </span><span class="btn-text">Add New City</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Cities Row -->
+
+<div id="cityModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content form-horizontal" id="cityModalForm">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h5 id="cityModalTitle" class="modal-title">City</h5>
+            </div>
+            <div class="modal-body">
+                <input id="cityModalID" type="hidden" class="form-control" name="ID">
+                <div class="form-group required">
+                    <label class="col-sm-3 control-label">Name</label>
+                    <div class="col-sm-9">
+                        <input id="cityModalName" type="text" class="form-control" name="Name" placeholder="Name" required>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-sm-3 control-label">Country</label>
+                    <div class="col-sm-9">
+                        <input id="cityModalCountryName" type="text" class="form-control" name="CountryName" placeholder="Country Name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Status</label>
+                    <div class="col-sm-9">
+                        <div class="checkbox checkbox-success pr-10 pull-left">
+                            <input data-val="true" name="IsActive" id="cityModalIsActive" type="checkbox">
+                            <label for="cityModalIsActive"> IsActive</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success btn-lable-wrap left-label"> <span class="btn-label"><i id="cityModalSubmitIcon" class="fa"></i> </span><span id="cityModalSubmitText" class="btn-text">Add</span></button>
+                <button data-dismiss="modal" type="button" class="btn btn-default btn-lable-wrap left-label"> <span class="btn-label"><i class="fa fa-times"></i> </span><span class="btn-text">Cancel</span></button>
+            </div>
+            <div class="alert alert-danger" id="cityModalFormErrors" style="display:none">
+                <p id="cityModalFormErrorsMessages"></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var citiesTable;
+    var newRecord;
+    var SelectedRow;
+
+    var cityID;
+    var cityName;
+    var cityIsActive;
+
+    $(document).ready(function () {
+        //setting up DataTable and Column Rendering and Getting All the required Data
+        citiesTable = $("#citiesTable").DataTable({
+            paging: true,
+            sort: true,
+            searching: true,
+            ajax: {
+                url: 'GetAllCitiesAJAX',
+                method: 'get',
+                dataType: 'json',
+                dataSrc: "CitiesList"
+            },
+            columns: [
+                {
+                    'data': 'ID'
+                },
+                {
+                    'data': 'Name',
+                    'render': function (Name) {
+                        return "<strong>" + Name + "</strong>";
+                    }
+                },
+                {
+                    'data': 'Country'
+                },
+                {
+                    'data': 'IsActive',
+                    'render': function (status) {
+                        return GetFormattedStatus(status);
+                    }
+                },
+                {
+                    'data': 'CreatedBy',
+                    'render': function (CreatedBy, type, row) {
+                        return CreatedBy + "<br />" + GetFormattedDate(row["CreatedOn"]);
+                    }
+                },
+                {
+                    'data': 'CreatedOn',
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    'data': 'ModifiedBy',
+                    'render': function (ModifiedBy, type, row) {
+                        return ModifiedBy + "<br />" + GetFormattedDate(row["ModifiedOn"]);
+                    }
+                },
+                {
+                    'data': 'ModifiedOn',
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    'data': 'ID',
+                    'render': function (ID, type, row, meta) {
+                        return "<button onClick=\"ShowCityModal('" + ID + "','" + row["Name"] + "','" + row["CountryName"] + "','" + row["IsActive"] + "', '" + meta.row + "')\" class=\"btn btn-warning btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-pencil\"></i> </span><span class=\"btn-text\">Edit</span></button> <button onClick=\"DeleteRecord('" + ID + "','" + row["Name"] + "', '" + meta.row + "')\" class=\"btn btn-danger btn-lable-wrap left-label\"> <span class=\"btn-label\"><i class=\"fa fa-trash\"></i> </span><span class=\"btn-text\">Delete</span></button>"
+                    },
+                    "searchable": false,
+                    "sortable": false
+                },
+            ],
+
+        });
+    });
+
+    $("#newCityButton").click(function () {
+        ShowCityModal();
+    });
+
+    function ShowCityModal(ID, Name, CountryName, Status, RowIndex) {
+        var cityModal = $('#cityModal');
+
+        if (ID) {
+            newRecord = false; //this means it is not a new record
+            SelectedRow = RowIndex;
+
+            $('#cityModalID').val(ID);
+
+            if (Name != undefined && Name.length > 0) {
+                $('#cityModalName').val(Name);
+            }
+
+            if (Status == true || Status == "true") {
+                $("#cityModalIsActive").prop('checked', true);
+            }
+            else {
+                $("#cityModalIsActive").prop('checked', false);
+            }
+
+            $('#cityModal').find('.modal-title').text('Update City');
+            $('#cityModal').find('#cityModalSubmitIcon').removeClass('fa-plus').addClass('fa-pencil');
+            $('#cityModal').find('#cityModalSubmitText').text('Update');
+        }
+        else {
+            newRecord = true; //this means it is a new record
+
+            $('#cityModal').find('.modal-title').text('Add New City');
+            $('#cityModal').find('#cityModalSubmitIcon').removeClass('fa-pencil').addClass('fa-plus');
+            $('#cityModal').find('#cityModalSubmitText').text('Save');
+        }
+
+        $('#cityModal').modal('toggle');
+    }
+
+    $("#cityModalForm").on('submit', (function (event) {
+
+        if ($("#cityModalForm").valid()) {
+            cityID = $('#cityModalID').val();
+            cityName = $('#cityModalName').val();
+            cityIsActive = $("#cityModalIsActive").is(':checked');
+
+            if (newRecord) {
+                SaveNewRecord(cityName, null, cityIsActive, event);
+            }
+            else {
+                UpdateRecord(cityID, cityName, cityIsActive, event);
+            }
+        }
+        else {
+            DisplayError("Please fill the required form fields.");
+        }
+    }));
+
+    function RefreshFields() {
+        $("#vehicleTypeModalID").val("");
+        $("#vehicleTypeModalName").val("");
+        $("#vehicleTypeModalIsActive").prop('checked', false);
+
+        newRecord = false;
+        SelectedRow = null;
+
+        $("#vehicleTypeModalFormErrorsMessages").html("");
+    }
+
+
+    function DisplayError(error) {
+        $("#vehicleTypeModalFormErrors").show();
+        $("#vehicleTypeModalFormErrorsMessages").html(error);
+
+        $("#vehicleTypeModalFormErrors").delay(5000).fadeOut('slow', function () {
+            $("#vehicleTypeModalFormErrorsMessages").html("");
+        });
+    }
+
+
+    function SaveNewRecord(name, status, event) {
+        event.preventDefault();
+        var jqxhr = $.ajax(
+                    {
+                        type: "post",
+                        data: {
+                            Name: name,
+                            IsActive: status //$("#vehicleTypeModalIsActive").is(':checked')
+                        },
+                        url: "AddNewVehicleTypeAJAX"
+                    })
+                        .done(function (data) {
+
+                            console.log(data);
+
+                            if (data.Successful) {
+                                citiesTable.row.add(data.VehicleType).draw(false);
+
+                                $('#vehicleTypeModal').modal('toggle');
+                            }
+                            else {
+                                DisplayError(data.Exception);
+                            }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                            DisplayError(errorThrown);
+                        })
+                        .always(function () {
+                        });
+    }
+
+    function UpdateRecord(id, name, status, event) {
+
+        event.preventDefault();
+        var jqxhr = $.ajax(
+                    {
+                        type: "post",
+                        data: {
+                            ID: id,
+                            Name: name,
+                            IsActive: status
+                        },
+                        url: "UpdateVehicleTypeAJAX"
+                    })
+                        .done(function (data) {
+
+                            console.log(data);
+
+                            if (data.Successful) {
+                                citiesTable.row(SelectedRow).data(data.VehicleType).invalidate().draw();
+
+                                $('#vehicleTypeModal').modal('toggle');
+                            }
+                            else {
+                                DisplayError(data.Exception);
+                            }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+                            DisplayError(errorThrown);
+                        })
+                        .always(function () {
+                        });
+    }
+
+    function DeleteRecord(ID, Name, RowIndex) {
+        swal({
+            title: "Warning!",
+            text: "Are you sure you want to delete '"+Name+"' Vehicle Type record?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#fcb03b",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                ConfirmedDelete(ID, Name, RowIndex);
+            }
+        });
+    }
+
+    function ConfirmedDelete(id, Name, RowIndex)
+    {
+        var jqxhr = $.ajax(
+                    {
+                        type: "post",
+                        data: {
+                            ID: id
+                        },
+                        url: "DeleteVehicleTypeAJAX"
+                    })
+                        .done(function (data) {
+                            if (data.Successful) {
+                                citiesTable.row(RowIndex).remove();
+                                citiesTable.rows().invalidate().draw();
+
+                                swal("Deleted!", Name + " Vehicle Type Delete.", "success");
+                            }
+                            else {
+                                swal("Error!", "Unable to Delete " + Name + " Vehicle Type. Error:" + data.Exception, "error");
+                            }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                            swal("Error!", errorThrown, "error");
+                        })
+                        .always(function () {
+                        });
+
+    }
+
+</script>

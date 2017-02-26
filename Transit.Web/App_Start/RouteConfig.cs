@@ -62,9 +62,15 @@ namespace Transit.Web
             //  );
 
             routes.MapRoute(
-              name: "VehicleTypesActions",
+              name: "VehicleTypes",
               url: "admin/vehicle-types/{action}",
               defaults: new { controller = "VehicleTypes", action = "Index" }
+              );
+
+            routes.MapRoute(
+              name: "Cities",
+              url: "admin/cities/{action}",
+              defaults: new { controller = "Cities", action = "Index" }
               );
 
             routes.MapRoute(

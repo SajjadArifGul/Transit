@@ -19,4 +19,10 @@ namespace Transit.Commons
         public List<VehicleType> VehicleTypesList { get; set; }
         public VehicleType VehicleType { get; set; }
     }
+
+    public class CityRecord : Record
+    {
+        public List<City> CitiesList { get; set; }
+        public City City { get; set; }
+    }
 }

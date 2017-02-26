@@ -48,9 +48,9 @@ namespace Transit.Services
             return cities.GetAll().Where(t => t.Name.ToLower() == Name.ToLower()).FirstOrDefault();
         }
 
-        public bool IsUpdateAllowed(int ID, string Name)
+        public bool IsUpdateAllowed(int ID, int CountryID, string Name)
         {
-            if (cities.GetAll().Where(t => t.Name == Name).Where(t => t.ID != ID).FirstOrDefault() != null)
+            if (cities.GetAll().Where(t => t.Name == Name).Where(t => t.CountryID != CountryID).Where(t => t.ID != ID).FirstOrDefault() != null)
             {
                 return false;
             }
