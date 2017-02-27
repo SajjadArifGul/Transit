@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cities.cs" />
+    <Compile Include="Countries.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="Migrations\201702090857422_Initilized.cs" />
     <Compile Include="Migrations\201702090857422_Initilized.Designer.cs">
