@@ -47,36 +47,35 @@ namespace Transit.Web
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/Theme").Include(
-                      "~/Theme/vendors/bower_components/morris.js/morris.css",
-                      "~/Theme/vendors/bower_components/datatables/media/css/jquery.dataTables.min.css",
-                      "~/Theme/vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.css",
-                      "~/Theme/vendors/bower_components/sweetalert/dist/sweetalert.css",
-                      "~/Theme/vendors/bower_components/owl.carousel/dist/assets/owl.carousel.min.css",
-                      "~/Theme/vendors/bower_components/owl.carousel/dist/assets/owl.theme.default.min.css",
-                      "~/Theme/dist/css/style.css"));
-
+                      "~/Themes/vendors/bower_components/morris.js/morris.css",
+                      "~/Themes/vendors/bower_components/datatables/media/css/jquery.dataTables.min.css",
+                      "~/Themes/vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.css",
+                      "~/Themes/vendors/bower_components/sweetalert/dist/sweetalert.css",
+                      "~/Themes/vendors/bower_components/owl.carousel/dist/assets/owl.carousel.min.css",
+                      "~/Themes/vendors/bower_components/owl.carousel/dist/assets/owl.theme.default.min.css",
+                      "~/Themes/dist/css/style.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/Theme").Include(
-                      "~/Theme/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js",
-                      "~/Theme/vendors/bower_components/sweetalert/dist/sweetalert.min.js",
+                      "~/Themes/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js",
+                      "~/Themes/vendors/bower_components/sweetalert/dist/sweetalert.min.js",
                       "~/Scripts/Custom/functions.js",
-                      "~/Theme/vendors/bower_components/datatables/media/js/jquery.dataTables.min.js",
-                      "~/Theme/dist/js/jquery.slimscroll.js",
-                      "~/Theme/vendors/bower_components/moment/min/moment.min.js",
-                      "~/Theme/vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js",
-                      "~/Theme/dist/js/simpleweather-data.js",
-                      "~/Theme/vendors/bower_components/waypoints/lib/jquery.waypoints.min.js",
-                      "~/Theme/vendors/bower_components/Counter-Up/jquery.counterup.min.js",
-                      "~/Theme/dist/js/dropdown-bootstrap-extended.js",
-                      "~/Theme/vendors/jquery.sparkline/dist/jquery.sparkline.min.js",
-                      "~/Theme/vendors/chart.js/Chart.min.js",
-                      "~/Theme/vendors/bower_components/raphael/raphael.min.js",
-                      "~/Theme/vendors/bower_components/morris.js/morris.min.js",
-                      "~/Theme/dist/js/morris-data.js",
-                      "~/Theme/vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.js",
-                      "~/Theme/dist/js/init.js",
-                      "~/Theme/dist/js/dashboard-data.js",
-                      "~/Theme/vendors/bower_components/owl.carousel/dist/owl.carousel.min.js"));
+                      "~/Themes/vendors/bower_components/datatables/media/js/jquery.dataTables.min.js",
+                      "~/Themes/dist/js/jquery.slimscroll.js",
+                      "~/Themes/vendors/bower_components/moment/min/moment.min.js",
+                      "~/Themes/vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js",
+                      "~/Themes/dist/js/simpleweather-data.js",
+                      "~/Themes/vendors/bower_components/waypoints/lib/jquery.waypoints.min.js",
+                      "~/Themes/vendors/bower_components/Counter-Up/jquery.counterup.min.js",
+                      "~/Themes/dist/js/dropdown-bootstrap-extended.js",
+                      "~/Themes/vendors/jquery.sparkline/dist/jquery.sparkline.min.js",
+                      "~/Themes/vendors/chart.js/Chart.min.js",
+                      "~/Themes/vendors/bower_components/raphael/raphael.min.js",
+                      "~/Themes/vendors/bower_components/morris.js/morris.min.js",
+                      "~/Themes/dist/js/morris-data.js",
+                      "~/Themes/vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.js",
+                      "~/Themes/dist/js/init.js",
+                      "~/Themes/dist/js/dashboard-data.js",
+                      "~/Themes/vendors/bower_components/owl.carousel/dist/owl.carousel.min.js"));
         }
     }
 }

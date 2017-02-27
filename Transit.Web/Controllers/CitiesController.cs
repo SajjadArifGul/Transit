@@ -70,6 +70,21 @@ namespace Transit.Web.Controllers
 
             return result;
         }
+        
+        [HttpGet]
+        public JsonResult GetAllCountriesAJAX()
+        {
+            JsonResult result = new JsonResult();
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            
+            result.Data = new CountryRecord()
+            {
+                CountriesList = CountriesService.Instance.GetAllCountries()
+            };
+
+            return result;
+        }
+
 
         [HttpPost]
         public JsonResult AddNewCityAJAX(CityViewModel model)

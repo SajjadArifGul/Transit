@@ -60,6 +60,7 @@
                     <label class="col-sm-3 control-label">Country</label>
                     <div class="col-sm-9">
                         <input id="cityModalCountryName" type="text" class="form-control" name="CountryName" placeholder="Country Name" required>
+                        <input id="cityModalhdnCountryID" type="text" class="form-control" name="CountryName" placeholder="Country Name" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -91,6 +92,8 @@
     var cityID;
     var cityName;
     var cityIsActive;
+
+    var Countries;
 
     $(document).ready(function () {
         //setting up DataTable and Column Rendering and Getting All the required Data
@@ -156,6 +159,8 @@
             ],
 
         });
+
+        SetAutoComplete();
     });
 
     $("#newCityButton").click(function () {
@@ -226,8 +231,7 @@
 
         $("#vehicleTypeModalFormErrorsMessages").html("");
     }
-
-
+    
     function DisplayError(error) {
         $("#vehicleTypeModalFormErrors").show();
         $("#vehicleTypeModalFormErrorsMessages").html(error);
@@ -236,8 +240,7 @@
             $("#vehicleTypeModalFormErrorsMessages").html("");
         });
     }
-
-
+    
     function SaveNewRecord(name, status, event) {
         event.preventDefault();
         var jqxhr = $.ajax(
@@ -350,4 +353,21 @@
 
     }
 
+    function SetAutoComplete()
+    {
+        debugger;
+        $.getJSON('/admin/cities/GetAllCountriesAJAX', function (data) {
+            debugger;
+            Countries = data;
+            $("#cityModalCountryName").autocomplete({
+                select: function (a, b) {
+                    debugger;
+                    $(this).val(b.item.label);
+                    $('#cityModalhdnCountryID').val(b.item.value);
+                    return false;
+                }
+                , source: Countries
+            });
+        });
+    }
 </script>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Transit.Services;
 
 namespace Transit.Web
 {
@@ -15,43 +16,43 @@ namespace Transit.Web
 
             routes.MapRoute(
               name: "Register",
-              url: "register",
+              url: TransitService.Instance.GetTransitURLByName("REGISTER").Value,
               defaults: new { controller = "Account", action = "Register" }
               );
 
             routes.MapRoute(
               name: "Login",
-              url: "login",
+              url: TransitService.Instance.GetTransitURLByName("LOGIN").Value,
               defaults: new { controller = "Account", action = "Login" }
               );
 
             routes.MapRoute(
               name: "About",
-              url: "about-us",
+              url: TransitService.Instance.GetTransitURLByName("ABOUTUS").Value,
               defaults: new { controller = "Home", action = "About" }
               );
 
             routes.MapRoute(
               name: "Contact",
-              url: "contact-us",
+              url: TransitService.Instance.GetTransitURLByName("CONTACTUS").Value,
               defaults: new { controller = "Home", action = "Contact" }
               );
 
             routes.MapRoute(
               name: "Privacy Policy",
-              url: "privacy-policy",
+              url: TransitService.Instance.GetTransitURLByName("PRIVACYPOLICY").Value,
               defaults: new { controller = "Home", action = "PrivacyPolicy" }
               );
 
             routes.MapRoute(
               name: "TermsAndConditions",
-              url: "terms-and-conditions",
+              url: TransitService.Instance.GetTransitURLByName("TERMSANDCONDITIONS").Value,
               defaults: new { controller = "Home", action = "TermsAndConditions" }
               );
 
             routes.MapRoute(
               name: "FAQs",
-              url: "faqs",
+              url: TransitService.Instance.GetTransitURLByName("FAQs").Value,
               defaults: new { controller = "Home", action = "FAQs" }
               );
 

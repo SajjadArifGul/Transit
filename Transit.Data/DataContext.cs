@@ -22,5 +22,6 @@ namespace Transit.Data
         public DbSet<Route> Routes { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehicleType> VehicleTypes { get; set; }
+        public DbSet<TransitURL> TransitURLs { get; set; }
     }
 }

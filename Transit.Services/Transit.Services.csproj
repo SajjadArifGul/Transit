@@ -43,6 +43,7 @@
     <Compile Include="CitiesService.cs" />
     <Compile Include="CountriesService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransitService.cs" />
     <Compile Include="VehicleTypesService.cs" />
   </ItemGroup>
   <ItemGroup>

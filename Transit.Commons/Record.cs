@@ -25,4 +25,10 @@ namespace Transit.Commons
         public List<City> CitiesList { get; set; }
         public City City { get; set; }
     }
+
+    public class CountryRecord : Record
+    {
+        public List<Country> CountriesList { get; set; }
+        public Country Country { get; set; }
+    }
 }
