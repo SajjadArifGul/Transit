@@ -52,7 +52,7 @@ namespace Transit.Web
 
             routes.MapRoute(
               name: "FAQs",
-              url: TransitService.Instance.GetTransitURLByName("FAQs").Value,
+              url: TransitService.Instance.GetTransitURLByName("FAQS").Value,
               defaults: new { controller = "Home", action = "FAQs" }
               );
 
@@ -64,19 +64,19 @@ namespace Transit.Web
 
             routes.MapRoute(
               name: "VehicleTypes",
-              url: "admin/vehicle-types/{action}",
+              url: TransitService.Instance.GetTransitURLByName("VEHICLETYPES").Value,
               defaults: new { controller = "VehicleTypes", action = "Index" }
               );
 
             routes.MapRoute(
               name: "Cities",
-              url: "admin/cities/{action}",
+              url: TransitService.Instance.GetTransitURLByName("CITIES").Value,
               defaults: new { controller = "Cities", action = "Index" }
               );
 
             routes.MapRoute(
                 name: "Default",
-                url: "",
+                url: TransitService.Instance.GetTransitURLByName("DEFAULT").Value,
                 defaults: new { controller = "Home", action = "Index" }
               );
 

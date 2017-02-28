@@ -1,4 +1,6 @@
-﻿<!-- Top Menu Items -->
+﻿@using Transit.Services 
+
+<!-- Top Menu Items -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <a id="toggle_nav_btn" class="toggle-left-nav-btn inline-block mr-20 pull-left" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
     <a href="/"><img class="brand-img pull-left" src="~/Images/TransitLogo.png" alt="brand" /></a>
@@ -171,10 +173,10 @@
     {
         <ul class="nav navbar-right top-nav pull-right">            
             <li>
-                <a href="/login/"><i class="icon-login"></i> Login</a>
+                <a href="/@TransitService.Instance.GetTransitURLByName("LOGIN").Value"><i class="icon-login"></i> Login</a>
             </li>
             <li>
-                <a href="/register/"><i class="icon-user-follow"></i> Register</a>
+                <a href="/@TransitService.Instance.GetTransitURLByName("REGISTER").Value"><i class="icon-user-follow"></i> Register</a>
             </li>
         </ul>
     }
@@ -184,18 +186,21 @@
 <div class="fixed-sidebar-left">
     <ul class="nav navbar-nav side-nav nicescroll-bar">
         <li>
-            <a href="/about-us/"><i class="icon-info mr-10"></i>About Us</a>
+            <a href="/@TransitService.Instance.GetTransitURLByName("ABOUTUS").Value"><i class="icon-info mr-10"></i>About Us</a>
         </li>
         <li>
-            <a href="/contact-us/"><i class="icon-paper-plane mr-10"></i>Contact Us</a>
+            <a href="/@TransitService.Instance.GetTransitURLByName("CONTACTUS").Value"><i class="icon-paper-plane mr-10"></i>Contact Us</a>
         </li>
         <li>
-            <a href="/faqs/"><i class="fa fa-question mr-10"></i>FAQs</a>
+            <a href="/@TransitService.Instance.GetTransitURLByName("FAQS").Value"><i class="fa fa-question mr-10"></i>FAQs</a>
         </li>
         @if (User.IsInRole("Admin"))
         {
             <li>
-                <a href="/admin/vehicle-types/"><i class="fa fa-truck mr-10"></i>Vehicle Types</a>
+                <a href="/@TransitService.Instance.GetTransitURLByName("MANAGEVEHICLETYPES").Value"><i class="fa fa-truck mr-10"></i>Vehicle Types</a>
+            </li>
+            <li>
+                <a href="/@TransitService.Instance.GetTransitURLByName("MANAGECITIES").Value"><i class="fa fa-map-marker mr-10"></i>Cities</a>
             </li>
         }
         <li>
