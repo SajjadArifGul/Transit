@@ -43,6 +43,11 @@ namespace Transit.Services
             return cities.GetAll().Where(t => t.ID == ID).FirstOrDefault();
         }
 
+        public List<City> GetCitiesByCountryID(int CountryID)
+        {
+            return cities.GetAll().Where(t => t.CountryID == CountryID).ToList();
+        }
+
         public City GetCityByName(string Name)
         {
             return cities.GetAll().Where(t => t.Name.ToLower() == Name.ToLower()).FirstOrDefault();

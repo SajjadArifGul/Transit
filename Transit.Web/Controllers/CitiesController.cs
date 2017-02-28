@@ -40,7 +40,6 @@ namespace Transit.Web.Controllers
                     ID = city.ID,
                     Name = city.Name,
                     CountryID = city.CountryID,
-                    CountryName = city.Country.Name,
                     IsActive = city.IsActive,
                     CreatedBy = city.CreatedBy,
                     CreatedOn = city.CreatedOn,
@@ -70,22 +69,74 @@ namespace Transit.Web.Controllers
 
             return result;
         }
-        
+
+        [HttpGet]
+        public JsonResult GetCitiesByCountryIDAJAX(int CountryID)
+        {
+            JsonResult result = new JsonResult();
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+            if (CountryID > 0)
+            {
+                result.Data = new CityRecord()
+                {
+                    Successful = true,
+                    Country = CountriesService.Instance.GetCountryByID(CountryID),
+                    CitiesList = CitiesService.Instance.GetCitiesByCountryID(CountryID)
+                };
+            }
+            else
+            {
+                result.Data = new CityRecord()
+                {
+                    Successful = false,
+                    Exception = "No Country ID Passed."
+                };
+            }
+
+            return result;
+        }
+
         [HttpGet]
         public JsonResult GetAllCountriesAJAX()
         {
             JsonResult result = new JsonResult();
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            
-            result.Data = new CountryRecord()
-            {
-                CountriesList = CountriesService.Instance.GetAllCountries()
-            };
 
+            //result.Data = new CountryRecord();
+            //{
+            //    Successful = true,
+            //    CountriesArray = new string[ CountriesService.Instance.GetAllCountries()
+            //};
+
+            CountryRecord record = new CountryRecord();
+
+            List<Country> countries = CountriesService.Instance.GetAllCountries();
+
+            if (countries.Count > 0)
+            {
+                record.Successful = true;
+                record.CountryItems = new CountryItem[countries.Count];
+                int i= 0;
+                foreach (Country country in countries)
+                {
+                    record.CountryItems[i] = new CountryItem() {
+                        value = country.ID,
+                        label = country.Name
+                    };
+                    i++;
+                }
+            }
+            else
+            {
+                record.Successful = false;
+                record.Exception = "No countries found";
+            }
+
+            result.Data = record;
             return result;
         }
-
-
+        
         [HttpPost]
         public JsonResult AddNewCityAJAX(CityViewModel model)
         {

@@ -22,4 +22,4 @@ namespace Transit.Entities
         public string ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
     }
-}
+}                                                                                
