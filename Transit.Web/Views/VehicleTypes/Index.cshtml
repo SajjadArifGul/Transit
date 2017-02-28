@@ -78,6 +78,7 @@
 </div>
 
 <script type="text/javascript">
+
     var vehicleTypesTable;
     var newRecord;
     var SelectedRow;
@@ -93,7 +94,7 @@
             sort: true,
             searching: true,
             ajax: {
-                url: 'GetAllVehicleTypesAJAX',
+                url: ('/@(Transit.Services.TransitService.Instance.GetTransitURLByName("MANAGEVEHICLETYPES").Value)GetAllVehicleTypesAJAX'),
                 method: 'get',
                 dataType: 'json',
                 dataSrc: "VehicleTypesList" //everything we received back in ajax call is source for our data
@@ -147,8 +148,12 @@
             ],
 
         });
+
+        $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+            swal("Error!", "An error occured while trying to get Vehicle Types data. Please check URL or report to Admin.", "error");
+        };
     });
-    
+
     $("#newVehicleTypeButton").click(function () {
         ShowVehicleTypeModal();
     });
@@ -190,12 +195,12 @@
     }
 
     $("#vehicleTypeModalForm").on('submit', (function (event) {
-        
+
         if ($("#vehicleTypeModalForm").valid()) {
             vehicleTypeId = $('#vehicleTypeModalID').val();
             vehicleTypeName = $('#vehicleTypeModalName').val();
             vehicleTypeIsActive = $("#vehicleTypeModalIsActive").is(':checked');
-            
+
             if (newRecord) {
                 SaveNewRecord(vehicleTypeName, vehicleTypeIsActive, event);
             }
@@ -218,7 +223,7 @@
 
         $("#vehicleTypeModalFormErrorsMessages").html("");
     }
-    
+
 
     function DisplayError(error) {
         $("#vehicleTypeModalFormErrors").show();
@@ -239,10 +244,11 @@
                             Name: name,
                             IsActive: status //$("#vehicleTypeModalIsActive").is(':checked')
                         },
-                        url: "AddNewVehicleTypeAJAX"
+                        url: ('/@(Transit.Services.TransitService.Instance.GetTransitURLByName("MANAGEVEHICLETYPES").Value)AddNewVehicleTypeAJAX'),
+
                     })
                         .done(function (data) {
-                            
+
                             console.log(data);
 
                             if (data.Successful) {
@@ -262,7 +268,7 @@
     }
 
     function UpdateRecord(id, name, status, event) {
-        
+
         event.preventDefault();
         var jqxhr = $.ajax(
                     {
@@ -272,10 +278,11 @@
                             Name: name,
                             IsActive: status
                         },
-                        url: "UpdateVehicleTypeAJAX"
+                        url: ('/@(Transit.Services.TransitService.Instance.GetTransitURLByName("MANAGEVEHICLETYPES").Value)UpdateVehicleTypeAJAX'),
+
                     })
                         .done(function (data) {
-                            
+
                             console.log(data);
 
                             if (data.Successful) {
@@ -288,14 +295,14 @@
                             }
                         })
                         .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                            
+
                             DisplayError(errorThrown);
                         })
                         .always(function () {
                         });
     }
 
-    function DeleteRecord(ID, Name, RowIndex) {        
+    function DeleteRecord(ID, Name, RowIndex) {
         swal({
             title: "Warning!",
             text: "Are you sure you want to delete '"+Name+"' Vehicle Type record?",
@@ -321,7 +328,8 @@
                         data: {
                             ID: id
                         },
-                        url: "DeleteVehicleTypeAJAX"
+                        url: ('/@(Transit.Services.TransitService.Instance.GetTransitURLByName("MANAGEVEHICLETYPES").Value)DeleteVehicleTypeAJAX'),
+
                     })
                         .done(function (data) {
                             if (data.Successful) {
